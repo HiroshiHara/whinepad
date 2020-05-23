@@ -1,0 +1,115 @@
+.Button {
+  background-color: #6f001b;
+  border-radius: 2px;
+  border: 0;
+  box-shadow: 0px 1px 1px #d9d9d9;
+  color: #fff;
+  cursor: pointer;
+  display: inline-block;
+  font-size: 18px;
+  font-weight: bold;
+  padding: 5px 15px;
+  text-decoration: none;
+  transition-duration: 0.1s;
+  transition-property: transform;
+}
+
+.Button:hover {
+  transform: scale(1.1);
+}
+html {
+  background: white;
+  font-size: 16px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
+}
+
+input {
+  font-size: 16px;
+}
+
+td {
+  border-top: 1px solid black;
+  cursor: cell;
+  padding: 5px;
+}
+
+.Excel th {
+  cursor: pointer;
+  padding: 5px;
+}
+
+.Excel table {
+  border: 1px solid black;
+  margin: 20px;
+}
+
+.toolbar {
+  margin-top: 20px;
+  margin-left: 20px;
+}
+
+.toolbar a, .toolbar button { /* thanks css3buttongenerator.com! */
+  background: #7d5027;
+  color: #ffffff;
+  font-size: 14px;
+  padding: 10px 20px 10px 20px;
+  text-decoration: none;
+  border: 0;
+  margin-right: 5px;
+}
+
+.toolbar a:hover, .toolbar button:hover {
+  background: #9e7046;
+  text-decoration: none;
+}
+.Logo {
+  background-image: url("images/whinepad-logo.png");
+  background-size: cover;
+  background-color: #692151;
+  display: inline-block;
+  height: 60px;
+  width: 100px;
+  vertical-align: middle;
+}
+/* thanks to https://css-tricks.com/star-ratings/ */
+.Rating {
+  cursor: pointer;
+  display: inline-block;
+  white-space: nowrap;
+  font-size: 28px;
+}
+
+.Rating.RatingReadonly{
+  cursor: auto;
+}
+
+.Rating > span {
+  color: grey;
+  display: inline-block;
+  position: relative;
+  width: 1.1em;
+}
+
+.Rating .RatingOn:before {
+   color: gold;
+   content: "\2605";
+   left: 0; 
+   padding: 1px;
+   position: absolute;
+}
+.Suggest {
+  
+}
+html {
+  background-color: white;
+  font-size: 14px;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+h1 {
+  color: white;
+  background-color: #692151;
+}
+
+/* A Modern CSS Reset */
+*,*::before,*::after{box-sizing:border-box}ul[class],ol[class]{padding:0}body,h1,h2,h3,h4,p,ul[class],ol[class],figure,blockquote,dl,dd{margin:0}body{min-height:100vh;scroll-behavior:smooth;text-rendering:optimizeSpeed;line-height:1.5}ul[class],ol[class]{list-style:none}a:not([class]){text-decoration-skip-ink:auto}img{max-width:100%;display:block}article>*+*{margin-top:1em}input,button,textarea,select{font:inherit}img:not([alt]){filter:blur(10px)}@media(prefers-reduced-motion:reduce){*{animation-duration:.01ms !important;animation-iteration-count:1 !important;transition-duration:.01ms !important;scroll-behavior:auto !important}}

@@ -1,0 +1,45 @@
+html {
+  background: white;
+  font-size: 16px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
+}
+
+input {
+  font-size: 16px;
+}
+
+td {
+  border-top: 1px solid black;
+  cursor: cell;
+  padding: 5px;
+}
+
+.Excel th {
+  cursor: pointer;
+  padding: 5px;
+}
+
+.Excel table {
+  border: 1px solid black;
+  margin: 20px;
+}
+
+.toolbar {
+  margin-top: 20px;
+  margin-left: 20px;
+}
+
+.toolbar a, .toolbar button { /* thanks css3buttongenerator.com! */
+  background: #7d5027;
+  color: #ffffff;
+  font-size: 14px;
+  padding: 10px 20px 10px 20px;
+  text-decoration: none;
+  border: 0;
+  margin-right: 5px;
+}
+
+.toolbar a:hover, .toolbar button:hover {
+  background: #9e7046;
+  text-decoration: none;
+}
