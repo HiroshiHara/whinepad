@@ -185,7 +185,7 @@ _reactDom2.default.render(_react2.default.createElement(
           _react2.default.createElement(
             'td',
             null,
-            _react2.default.createElement(_FormInput2.default, { type: 'input', defaultValue: 'This is defalutvalue.' })
+            _react2.default.createElement(_FormInput2.default, { type: 'input', defaultValue: 'This is default value.' })
           )
         ),
         _react2.default.createElement(
