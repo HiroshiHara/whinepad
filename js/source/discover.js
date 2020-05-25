@@ -2,6 +2,7 @@
 
 import React from 'react';
 import ReactDOM from 'react-dom';
+import Form from './components/Form';
 import FormInput from './components/FormInput';
 import Logo from './components/Logo';
 import Button from './components/Button';
@@ -47,19 +48,19 @@ ReactDOM.render(
       <h2>■Rating</h2>
       <div>
         ・None default value.
-       <Rating />
+        <Rating />
       </div>
       <div>
         ・default value is 4.
-       <Rating defaultValue={4} />
+        <Rating defaultValue={4} />
       </div>
       <div>
         ・Max value is 11.
-       <Rating max={11} />
+        <Rating max={11} />
       </div>
       <div>
         ・Read only.
-       <Rating readonly={true} defaultValue={3} />
+        <Rating readonly={true} defaultValue={3} />
       </div>
     </div>
 
@@ -99,6 +100,42 @@ ReactDOM.render(
           </tr>
         </tbody>
       </table>
+    </div>
+
+    <div className='container' style={{ padding: '10px', marginBottom: '32px', border: 'solid' }}>
+      <h2>■Form</h2>
+      <Form
+        fields={[
+          {
+            id: 'rateme',
+            label: 'Rating',
+            type: 'rating'
+          },
+          {
+            id: 'freetext',
+            label: 'Input',
+            type: 'input'
+          },
+          {
+            id: 'rateme2',
+            label: 'Rating-readonly',
+            type: 'rating'
+          },
+          {
+            id: 'country',
+            label: 'datalist',
+            type: 'suggest',
+            options: ['Japan', 'America', 'China', 'German']
+          }
+        ]}
+        initialData={{
+          rateme: 4,
+          freetext: 'Hello, world.',
+          rateme2: 5,
+          country: 'America'
+        }}
+        readonly={false}
+      />
     </div>
   </div>,
   document.getElementById('pad')
