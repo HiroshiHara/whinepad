@@ -8,6 +8,7 @@ import Logo from './components/Logo';
 import Button from './components/Button';
 import Suggest from './components/Suggest';
 import Rating from './components/Rating';
+import Actions from './components/Actions';
 
 ReactDOM.render(
   <div style={{ padding: '20px' }}>
@@ -136,6 +137,13 @@ ReactDOM.render(
         }}
         readonly={false}
       />
+    </div>
+
+    <div className='container' style={{ padding: '10px', marginBottom: '32px', border: 'solid' }}>
+      <h2>■Actions</h2>
+      <div>
+        <Actions onAction={type => alert(type)} />
+      </div>
     </div>
   </div>,
   document.getElementById('pad')
