@@ -8,6 +8,10 @@ var _reactDom = require('react-dom');
 
 var _reactDom2 = _interopRequireDefault(_reactDom);
 
+var _Form = require('./components/Form');
+
+var _Form2 = _interopRequireDefault(_Form);
+
 var _FormInput = require('./components/FormInput');
 
 var _FormInput2 = _interopRequireDefault(_FormInput);
@@ -250,5 +254,41 @@ _reactDom2.default.render(_react2.default.createElement(
         )
       )
     )
+  ),
+  _react2.default.createElement(
+    'div',
+    { className: 'container', style: { padding: '10px', marginBottom: '32px', border: 'solid' } },
+    _react2.default.createElement(
+      'h2',
+      null,
+      '\u25A0Form'
+    ),
+    _react2.default.createElement(_Form2.default, {
+      fields: [{
+        id: 'rateme',
+        label: 'Rating',
+        type: 'rating'
+      }, {
+        id: 'freetext',
+        label: 'Input',
+        type: 'input'
+      }, {
+        id: 'rateme2',
+        label: 'Rating-readonly',
+        type: 'rating'
+      }, {
+        id: 'country',
+        label: 'datalist',
+        type: 'suggest',
+        options: ['Japan', 'America', 'China', 'German']
+      }],
+      initialData: {
+        rateme: 4,
+        freetext: 'Hello, world.',
+        rateme2: 5,
+        country: 'America'
+      },
+      readonly: false
+    })
   )
 ), document.getElementById('pad'));
