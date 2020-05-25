@@ -1,3 +1,33 @@
+.Actions span {
+  border-radius: 50%;
+  border: 2px solid black;
+  color: black;
+  cursor: pointer;
+  display: inline-block;
+  font-weight: bold;
+  height: 33px;
+  margin: 5px 15px 5px 15px;
+  padding-top: 6px;
+  text-align: center;
+  line-height: 17px;
+  transition-duration: 0.1s;
+  transition-property: transform;
+  width: 33px;
+}
+
+.Actions span:hover {
+  transform: scale(1.1);
+}
+
+.Actions .ActionsInfo {
+  border-color: #3498DB;
+  color: #3498DB;
+}
+
+.Actions .ActionsDelete {
+  border-color: #B7477D;
+  color: #B7477D;
+}
 .Button {
   background-color: #6f001b;
   border-radius: 2px;
@@ -72,7 +102,10 @@ td {
 .Form .FormRow {
   padding-left: 20px;
   text-align: left;
-}.Logo {
+}.FormInput {
+  
+}
+.Logo {
   background-image: url("images/whinepad-logo.png");
   background-size: cover;
   background-color: #692151;

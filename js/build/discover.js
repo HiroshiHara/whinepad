@@ -32,6 +32,10 @@ var _Rating = require('./components/Rating');
 
 var _Rating2 = _interopRequireDefault(_Rating);
 
+var _Actions = require('./components/Actions');
+
+var _Actions2 = _interopRequireDefault(_Actions);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 _reactDom2.default.render(_react2.default.createElement(
@@ -290,5 +294,21 @@ _reactDom2.default.render(_react2.default.createElement(
       },
       readonly: false
     })
+  ),
+  _react2.default.createElement(
+    'div',
+    { className: 'container', style: { padding: '10px', marginBottom: '32px', border: 'solid' } },
+    _react2.default.createElement(
+      'h2',
+      null,
+      '\u25A0Actions'
+    ),
+    _react2.default.createElement(
+      'div',
+      null,
+      _react2.default.createElement(_Actions2.default, { onAction: function onAction(type) {
+          return alert(type);
+        } })
+    )
   )
 ), document.getElementById('pad'));
