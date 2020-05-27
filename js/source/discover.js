@@ -9,6 +9,7 @@ import Button from './components/Button';
 import Suggest from './components/Suggest';
 import Rating from './components/Rating';
 import Actions from './components/Actions';
+import Dialog from './components/Dialog';
 
 ReactDOM.render(
   <div style={{ padding: '20px' }}>
@@ -143,6 +144,24 @@ ReactDOM.render(
       <h2>■Actions</h2>
       <div>
         <Actions onAction={type => alert(type)} />
+      </div>
+    </div>
+
+    <div className='container' style={{ padding: '10px', marginBottom: '32px', border: 'solid' }}>
+      <h2>■Dialog</h2>
+      <div>
+        <Dialog
+          header="A simple dialog."
+          onAction={type => alert(type)}>
+          Hello, world!
+        </Dialog>
+        <Dialog
+          header="No cancel button, add custom button."
+          hasCancel={false}
+          confirmLabel="CONFIRM"
+          onAction={type => alert(type)}>
+          Whatever you want. example, <Button>Button</Button>
+        </Dialog>
       </div>
     </div>
   </div>,
