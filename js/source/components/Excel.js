@@ -11,7 +11,36 @@ import Actions from './Actions';
 import Dialog from './Dialog';
 
 class Excel extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      data: this.props.initialData,
+      // schema.id
+      sortby: null,
+      descending: false,
+      // {row: rowidx, cell: cellidx}
+      edit: null,
+      // {type: inputtype, idx: cellidx}
+      dialog: null
+    }
+  }
 
+  componentWillReceiveProps(newProps) {
+    this.setState({
+      data: newProps.initialData
+    });
+  }
+
+  _fireDataChange(data) {
+    this.props.onDataChange(data);
+  }
+
+  _sort(key) {
+    let data = Array.from(this.state.data);
+    // ソート基準が操作前後で同じであれば昇降順を逆転させる
+    const descending = (this.state.sortby === key) && !this.state.descending;
+
+  }
 }
 
 export default Excel
