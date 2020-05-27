@@ -36,6 +36,10 @@ var _Actions = require('./components/Actions');
 
 var _Actions2 = _interopRequireDefault(_Actions);
 
+var _Dialog = require('./components/Dialog');
+
+var _Dialog2 = _interopRequireDefault(_Dialog);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 _reactDom2.default.render(_react2.default.createElement(
@@ -309,6 +313,44 @@ _reactDom2.default.render(_react2.default.createElement(
       _react2.default.createElement(_Actions2.default, { onAction: function onAction(type) {
           return alert(type);
         } })
+    )
+  ),
+  _react2.default.createElement(
+    'div',
+    { className: 'container', style: { padding: '10px', marginBottom: '32px', border: 'solid' } },
+    _react2.default.createElement(
+      'h2',
+      null,
+      '\u25A0Dialog'
+    ),
+    _react2.default.createElement(
+      'div',
+      null,
+      _react2.default.createElement(
+        _Dialog2.default,
+        {
+          header: 'A simple dialog.',
+          onAction: function onAction(type) {
+            return alert(type);
+          } },
+        'Hello, world!'
+      ),
+      _react2.default.createElement(
+        _Dialog2.default,
+        {
+          header: 'No cancel button, add custom button.',
+          hasCancel: false,
+          confirmLabel: 'CONFIRM',
+          onAction: function onAction(type) {
+            return alert(type);
+          } },
+        'Whatever you want. example, ',
+        _react2.default.createElement(
+          _Button2.default,
+          null,
+          'Button'
+        )
+      )
     )
   )
 ), document.getElementById('pad'));
