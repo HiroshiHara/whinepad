@@ -131,6 +131,65 @@ class Excel extends Component {
     this._fireDataChange(data);
   }
 
+  /* 削除用ダイアログ */
+  _renderDeleteDialog() {
+    const first = this.state.data[this.state.dialog.idx];
+    const nameguess = first[Object.keys(first)[0]];
+    return (
+      <Dialog
+        modal={true}
+        header="Confirmation Delete"
+        confirmLabel="Delete"
+        onAction={this._deleteConfirmationClick.bind(this)}
+      >
+        {'Are you sure to delete?: ${nameguess}'}
+      </Dialog>
+    )
+  }
+
+  /* 照会/編集用ダイアログ
+    第一引数
+      :true... 照会
+      :false... 編集
+   */
+  _renderFormDialog(readonly) {
+    return (
+      <Dialog
+        modal={true}
+        header={readonly ? 'Information' : 'Edit item'}
+        confirmLabel={readonly ? 'OK' : 'SAVE'}
+        hasCancel={!readonly}
+        onAction={this._saveDataDialog.bind(this)}
+      >
+        <Form
+          fields={this.props.schema}
+          initialData={this.state.data[this.state.dialog.idx]}
+          readonly={readonly}
+          ref="form"
+        >
+        </Form>
+      </Dialog>
+    );
+  }
+
+  /* ダイアログの呼び出し元関数 */
+  _renderDialog() {
+    if (!this.state.dialog) {
+      return null;
+    }
+    const dialogType = this.state.dialog.type;
+    if (dialogType === 'delete') {
+      return this._renderDeleteDialog();
+    }
+    if (dialogType === 'info') {
+      return this._renderFormDialog(true);
+    }
+    if (dialogType === 'edit') {
+      return this._renderFormDialog();
+    }
+    throw Error('Invalid Dialog: ${this.state.dialog.type}');
+  }
+
   /* @render */
   render() {
     return (
