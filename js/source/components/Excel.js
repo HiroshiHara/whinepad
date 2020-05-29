@@ -88,7 +88,7 @@ class Excel extends Component {
     });
   }
 
-  /* 削除ダイアログでのクリック操作
+  /* 削除ダイアログでの操作
   ・'Dismiss'をクリック：ダイアログを閉じる
   ・削除確認時：ダイアログ呼び出し元となった行を削除する
    */
@@ -107,8 +107,39 @@ class Excel extends Component {
     this._fireDataChange(data);
   }
 
+  _closeDialog() {
+    this.setState({
+      dialog: null
+    });
+  }
 
+  /* 保存ダイアログでの操作
+  ・'Dismiss'クリック時：ダイアログを閉じる
+  ・保存時：フォームの入力内容でダイアログ呼び出し元の行を上書きする
+   */
+  _saveDataDialog(action) {
+    if (action === 'dismiss') {
+      this._closeDialog();
+      return;
+    }
+    let data = Array.from(this.state.data);
+    data[this.state.dialog.idx] = this.refs.form.getData();
+    this.setState({
+      dialog: null,
+      data: data
+    });
+    this._fireDataChange(data);
+  }
 
+  /* @render */
+  render() {
+    return (
+      <div className="Excel">
+        {this._renderTable()}
+        {this._renderDialog()}
+      </div>
+    );
+  }
 }
 
 export default Excel
