@@ -35,12 +35,80 @@ class Excel extends Component {
     this.props.onDataChange(data);
   }
 
+  /* 表のソーティングを行う関数 */
   _sort(key) {
     let data = Array.from(this.state.data);
     // ソート基準が操作前後で同じであれば昇降順を逆転させる
     const descending = (this.state.sortby === key) && !this.state.descending;
-
+    data.sort(function (a, b) {
+      if (descending) {
+        return a[column] < b[column] ? 1 : -1;
+      } else {
+        return a[colmun] > b[column] ? 1 : -1;
+      }
+    });
+    // stateを更新
+    this.setState({
+      data: data,
+      sortby: key,
+      descending: descending
+    });
+    this._fireDataChange(data);
   }
+
+  _showEditer(e) {
+    this.setState({
+      edit: {
+        row: parseInt(e.target.dataset.row, 10),
+        cell: e.target.dataset.key
+      }
+    });
+  }
+
+  /* セルの入力値で表を更新し、現在の編集セル情報をリセットする */
+  _save(e) {
+    // デフォルトのイベントをOFFにする
+    e.preventDefault();
+    const value = this.refs.input.getValue();
+    let data = Array.from(this.state.data);
+    data[this.state.edit.row][this.state.edit.key] = value;
+    this.setState({
+      edit: null,
+      data: data
+    });
+    this._fireDataChange(data);
+  }
+
+  _actionClick(rowidx, action) {
+    this.setState({
+      dialog: {
+        type: action,
+        idx: rowidx
+      }
+    });
+  }
+
+  /* 削除ダイアログでのクリック操作
+  ・'Dismiss'をクリック：ダイアログを閉じる
+  ・削除確認時：ダイアログ呼び出し元となった行を削除する
+   */
+  _deleteConfirmationClick(action) {
+    if (action === 'dismiss') {
+      this._closeDialog();
+      return;
+    }
+    let data = Array.from(this.state.data);
+    // 配列dataからdialogの呼び出し元となった行を削除する
+    data.splice(this.state.dialog.idx, 1);
+    this.setState({
+      dialog: null,
+      data: data
+    });
+    this._fireDataChange(data);
+  }
+
+
+
 }
 
 export default Excel
