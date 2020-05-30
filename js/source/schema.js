@@ -6,6 +6,7 @@ export default [
   {
     id: 'name',
     label: 'Name',
+    type: 'input',
     show: true,
     sample: '$2 chuck',
     align: 'left',
@@ -21,7 +22,7 @@ export default [
     id: 'grape',
     label: 'Grape',
     type: 'suggest',
-    options: classification.grapes, 
+    options: classification.grapes,
     show: true,
     sample: 'Merlot',
     align: 'left',

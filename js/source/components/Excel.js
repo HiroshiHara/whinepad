@@ -56,6 +56,7 @@ class Excel extends Component {
     this._fireDataChange(data);
   }
 
+  /* 編集中のセルの行、カラムを記憶するメソッド */
   _showEditer(e) {
     this.setState({
       edit: {
@@ -190,6 +191,101 @@ class Excel extends Component {
     throw Error('Invalid Dialog: ${this.state.dialog.type}');
   }
 
+  _renderTable() {
+    return (
+      <table>
+        <thead>
+          <tr>
+            {
+              this.props.schema.map(item => {
+                // schemaのshowプロパティがtrueでないなら表示しない
+                if (!item.show) {
+                  return null;
+                }
+                // thをonClick時にsortbyが決定するので、そのカラムに昇降順を示す記号をつける
+                let title = item.label;
+                if (this.state.sortby === item.id) {
+                  title += this.state.descending ? '\u2191' : '\u2193';
+                }
+                return (
+                  <th
+                    className={'schema-${item.id}'}
+                    key={item.id}
+                    onClick={this._sort.bind(this, item.id)}
+                  >
+                    {title}
+                  </th>
+                );
+              }, this)
+            }
+            <th className="ExcelNotSortable">Control</th>
+          </tr>
+        </thead>
+        <tbody onDoubleClick={this._showEditer.bind(this)}>
+          {
+            this.state.data.map((row, rowidx) => {
+              return (
+                <tr key={rowidx}>
+                  {
+                    Object.keys(row).map((cell, idx) => {
+                      const schema = this.props.schema[idx];
+                      if (!schema || !schema.show) {
+                        return null;
+                      }
+                      const isRating = schema.type === 'rating';
+                      const edit = this.state.edit;
+                      let content = row[cell];
+                      // 1.Ratingでないセル && 編集中セル情報あり
+                      //   編集中セルがこのセル自身である時
+                      if (!isRating && edit) {
+                        if (edit.row === rowidx && edit.key === schema.id) {
+                          // contentの内容を編集用セルに変更
+                          content = (
+                            <form onSubmit={this._save.bind(this)}>
+                              <FormInput
+                                ref="input"
+                                {...schema}
+                                defaultValue={Number(content)}
+                              >
+                              </FormInput>
+                            </form>
+                          );
+                          // 2.Ratingであるとき
+                        } else if (isRating) {
+                          content = <Rating readonly={true}
+                            defaultValue={Number(content)}></Rating>
+                        }
+                        return (
+                          <td
+                            className={classNames({
+                              ['schema-${schema.id}']: true,
+                              'ExcelEditable': !isRating,
+                              'ExcelDataLeft': schema.align === 'left',
+                              'ExcelDataRight': schema.align === 'right',
+                              'ExcelDataCenter': schema.align !== 'left' && schema.align !== 'right'
+                            })}
+                            key={idx}
+                            data-row={rowidx}
+                            data-key={schema.id}
+                          >
+                            {content}
+                          </td>
+                        );
+                      }
+                    }, this)
+                  }
+                  <td className="ExcelDataCenter">
+                    <Actions onAction={this._actionClick.bind(this, rowidx)}></Actions>
+                  </td>
+                </tr>
+              );
+            }, this)
+          }
+        </tbody>
+      </table>
+    );
+  }
+
   /* @render */
   render() {
     return (
@@ -199,6 +295,16 @@ class Excel extends Component {
       </div>
     );
   }
+}
+
+Excel.propTypes = {
+  schema: PropsTypes.arrayOf(
+    PropTypes.object
+  ),
+  initialData: PropTypes.arrayOf(
+    PropTypes.object
+  ),
+  onDataChange: PropTypes.func
 }
 
 export default Excel
