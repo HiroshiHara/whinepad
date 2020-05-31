@@ -78,6 +78,13 @@ var Excel = function (_Component) {
     return _this;
   }
 
+  /**
+   * 親コンポーネントからプロパティの変更があったとき、
+   * Excelコンポーネントのプロパティを更新するメソッド
+   * @param {Object} newProps new Properties
+   */
+
+
   _createClass(Excel, [{
     key: 'componentWillReceiveProps',
     value: function componentWillReceiveProps(newProps) {
@@ -85,13 +92,24 @@ var Excel = function (_Component) {
         data: newProps.initialData
       });
     }
+
+    /**
+     * 親コンポーネントにdataの変更を通知し、ストレージ更新の
+     * メソッドをコールする
+     * @param {Array} data new Table data
+     */
+
   }, {
     key: '_fireDataChange',
     value: function _fireDataChange(data) {
       this.props.onDataChange(data);
     }
 
-    /* 表のソーティングを行う関数 */
+    /**
+     * 列ヘッダーをクリックしたときにコールされ、
+     * 文字コード基準で昇降順で並び替える
+     * @param {string} key clicked column id
+     */
 
   }, {
     key: '_sort',
@@ -115,7 +133,10 @@ var Excel = function (_Component) {
       this._fireDataChange(data);
     }
 
-    /* 編集中のセルの行、カラムを記憶するメソッド */
+    /**
+     * 現在編集中のセルの情報を記録するメソッド
+     * @param {Object} e doubleClicked cell info
+     */
 
   }, {
     key: '_showEditer',
@@ -128,7 +149,10 @@ var Excel = function (_Component) {
       });
     }
 
-    /* セルの入力値で表を更新し、現在の編集セル情報をリセットする */
+    /**
+     * セルの入力値で表を更新し、現在の編集セル情報をリセットする
+     * @param {Object} e edited cell info
+     */
 
   }, {
     key: '_save',
@@ -144,6 +168,14 @@ var Excel = function (_Component) {
       });
       this._fireDataChange(data);
     }
+
+    /**
+     * Actionsボタンのどれかがクリックされたとき、
+     * dialogプロパティをセットする。
+     * @param {Number} rowidx アクション実行元の行番号
+     * @param {string} action どのActionsボタンかを判断する文字列(info, edit, delete)
+     */
+
   }, {
     key: '_actionClick',
     value: function _actionClick(rowidx, action) {
@@ -155,9 +187,9 @@ var Excel = function (_Component) {
       });
     }
 
-    /* 削除ダイアログでの操作
-    ・'Dismiss'をクリック：ダイアログを閉じる
-    ・削除確認時：ダイアログ呼び出し元となった行を削除する
+    /**
+     * 削除ダイアログでボタンを押下したときにコールされる
+     * @param {string} action
      */
 
   }, {
@@ -184,9 +216,9 @@ var Excel = function (_Component) {
       });
     }
 
-    /* 保存ダイアログでの操作
-    ・'Dismiss'クリック時：ダイアログを閉じる
-    ・保存時：フォームの入力内容でダイアログ呼び出し元の行を上書きする
+    /**
+     * 編集ダイアログでボタンを押下したときにしたときにコールされる
+     * @param {string} action
      */
 
   }, {
@@ -205,7 +237,9 @@ var Excel = function (_Component) {
       this._fireDataChange(data);
     }
 
-    /* 削除用ダイアログ */
+    /**
+     * 削除ダイアログを表示する
+     */
 
   }, {
     key: '_renderDeleteDialog',
@@ -224,10 +258,9 @@ var Excel = function (_Component) {
       );
     }
 
-    /* 照会/編集用ダイアログ
-      第一引数
-        :true... 照会
-        :false... 編集
+    /**
+     * 編集/照会ダイアログを表示する
+     * @param {boolean} readonly 読み取り専用かどうか
      */
 
   }, {
@@ -251,7 +284,9 @@ var Excel = function (_Component) {
       );
     }
 
-    /* ダイアログの呼び出し元関数 */
+    /**
+     * 各種ダイアログ表示メソッドをコールする
+     */
 
   }, {
     key: '_renderDialog',
@@ -271,6 +306,11 @@ var Excel = function (_Component) {
       }
       throw Error('Invalid Dialog: ${this.state.dialog.type}');
     }
+
+    /**
+     * 表を描画するrender()
+     */
+
   }, {
     key: '_renderTable',
     value: function _renderTable() {
@@ -371,7 +411,9 @@ var Excel = function (_Component) {
       );
     }
 
-    /* @render */
+    /**
+     * 表、ダイアログのrender()をコールする
+     */
 
   }, {
     key: 'render',

@@ -25,17 +25,31 @@ class Excel extends Component {
     }
   }
 
+  /**
+   * 親コンポーネントからプロパティの変更があったとき、
+   * Excelコンポーネントのプロパティを更新するメソッド
+   * @param {Object} newProps new Properties
+   */
   componentWillReceiveProps(newProps) {
     this.setState({
       data: newProps.initialData
     });
   }
 
+  /**
+   * 親コンポーネントにdataの変更を通知し、ストレージ更新の
+   * メソッドをコールする
+   * @param {Array} data new Table data
+   */
   _fireDataChange(data) {
     this.props.onDataChange(data);
   }
 
-  /* 表のソーティングを行う関数 */
+  /**
+   * 列ヘッダーをクリックしたときにコールされ、
+   * 文字コード基準で昇降順で並び替える
+   * @param {string} key clicked column id
+   */
   _sort(key) {
     let data = Array.from(this.state.data);
     // ソート基準が操作前後で同じであれば昇降順を逆転させる
@@ -56,7 +70,10 @@ class Excel extends Component {
     this._fireDataChange(data);
   }
 
-  /* 編集中のセルの行、カラムを記憶するメソッド */
+  /**
+   * 現在編集中のセルの情報を記録するメソッド
+   * @param {Object} e doubleClicked cell info
+   */
   _showEditer(e) {
     this.setState({
       edit: {
@@ -66,7 +83,10 @@ class Excel extends Component {
     });
   }
 
-  /* セルの入力値で表を更新し、現在の編集セル情報をリセットする */
+  /**
+   * セルの入力値で表を更新し、現在の編集セル情報をリセットする
+   * @param {Object} e edited cell info
+   */
   _save(e) {
     // デフォルトのイベントをOFFにする
     e.preventDefault();
@@ -80,6 +100,12 @@ class Excel extends Component {
     this._fireDataChange(data);
   }
 
+  /**
+   * Actionsボタンのどれかがクリックされたとき、
+   * dialogプロパティをセットする。
+   * @param {Number} rowidx アクション実行元の行番号
+   * @param {string} action どのActionsボタンかを判断する文字列(info, edit, delete)
+   */
   _actionClick(rowidx, action) {
     this.setState({
       dialog: {
@@ -89,9 +115,9 @@ class Excel extends Component {
     });
   }
 
-  /* 削除ダイアログでの操作
-  ・'Dismiss'をクリック：ダイアログを閉じる
-  ・削除確認時：ダイアログ呼び出し元となった行を削除する
+  /**
+   * 削除ダイアログでボタンを押下したときにコールされる
+   * @param {string} action
    */
   _deleteConfirmationClick(action) {
     if (action === 'dismiss') {
@@ -114,9 +140,9 @@ class Excel extends Component {
     });
   }
 
-  /* 保存ダイアログでの操作
-  ・'Dismiss'クリック時：ダイアログを閉じる
-  ・保存時：フォームの入力内容でダイアログ呼び出し元の行を上書きする
+  /**
+   * 編集ダイアログでボタンを押下したときにしたときにコールされる
+   * @param {string} action
    */
   _saveDataDialog(action) {
     if (action === 'dismiss') {
@@ -132,7 +158,9 @@ class Excel extends Component {
     this._fireDataChange(data);
   }
 
-  /* 削除用ダイアログ */
+  /**
+   * 削除ダイアログを表示する
+   */
   _renderDeleteDialog() {
     const first = this.state.data[this.state.dialog.idx];
     const nameguess = first[Object.keys(first)[0]];
@@ -148,10 +176,9 @@ class Excel extends Component {
     )
   }
 
-  /* 照会/編集用ダイアログ
-    第一引数
-      :true... 照会
-      :false... 編集
+  /**
+   * 編集/照会ダイアログを表示する
+   * @param {boolean} readonly 読み取り専用かどうか
    */
   _renderFormDialog(readonly) {
     return (
@@ -173,7 +200,9 @@ class Excel extends Component {
     );
   }
 
-  /* ダイアログの呼び出し元関数 */
+  /**
+   * 各種ダイアログ表示メソッドをコールする
+   */
   _renderDialog() {
     if (!this.state.dialog) {
       return null;
@@ -191,6 +220,9 @@ class Excel extends Component {
     throw Error('Invalid Dialog: ${this.state.dialog.type}');
   }
 
+  /**
+   * 表を描画するrender()
+   */
   _renderTable() {
     return (
       <table>
@@ -274,6 +306,7 @@ class Excel extends Component {
                       }
                     }, this)
                   }
+                  {/* ActionsコンポーネントのonActionプロパティに_actionClick()を渡す */}
                   <td className="ExcelDataCenter">
                     <Actions onAction={this._actionClick.bind(this, rowidx)}></Actions>
                   </td>
@@ -286,7 +319,9 @@ class Excel extends Component {
     );
   }
 
-  /* @render */
+  /**
+   * 表、ダイアログのrender()をコールする
+   */
   render() {
     return (
       <div className="Excel">
