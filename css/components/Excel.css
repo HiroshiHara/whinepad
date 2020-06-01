@@ -1,45 +1,46 @@
-html {
-  background: white;
-  font-size: 16px;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
+.Excel input {
+  font: 16px Arial;
 }
 
-input {
-  font-size: 16px;
-}
-
-td {
-  border-top: 1px solid black;
-  cursor: cell;
+.Excel td {
+  background-color: #ffffff;
   padding: 5px;
 }
 
 .Excel th {
+  color: #7f7f7f;
   cursor: pointer;
+  font-size: 13px;
+  font-weight: normal;
   padding: 5px;
+  text-align: center;
 }
 
 .Excel table {
-  border: 1px solid black;
-  margin: 20px;
+  width: 100%;
 }
 
-.toolbar {
-  margin-top: 20px;
-  margin-left: 20px;
+.Excel .ExcelNotSortable {
+  cursor: default;
 }
 
-.toolbar a, .toolbar button { /* thanks css3buttongenerator.com! */
-  background: #7d5027;
-  color: #ffffff;
-  font-size: 14px;
-  padding: 10px 20px 10px 20px;
-  text-decoration: none;
-  border: 0;
-  margin-right: 5px;
+.Excel .ExcelEditable {
+  cursor: cell;
 }
 
-.toolbar a:hover, .toolbar button:hover {
-  background: #9e7046;
-  text-decoration: none;
+.Excel .ExcelEditable:hover {
+  background: #FBFBFB;
+}
+
+.Excel .ExcelDataCenter {
+  text-align: center;
+}
+
+.Excel .ExcelDataLeft {
+  padding: 0 10px;
+  text-align: left;
+}
+
+.Excel .ExcelDataRight {
+  text-align: right;
 }

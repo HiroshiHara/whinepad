@@ -1,302 +1,345 @@
-import React from 'react'
+import React, { Component } from 'react'
 // Since React v15.5, PropTypes is separated from React.
 // You should import PropTypes and Replace decralation of React.PropTypes to PropTypes.
 import PropTypes from 'prop-types';
+import classNames from 'classnames';
+import Form from './Form';
+import FormInput from './FormInput';
+import Rating from './Rating';
+import Suggest from './Suggest';
+import Actions from './Actions';
+import Dialog from './Dialog';
 
-class Excel extends React.Component {
+class Excel extends Component {
   constructor(props) {
     super(props);
-    this.headers = this.props.headers;
-    this.initialData = this.props.initialData;
-    this._preSearchData = null;
-    this._log = [];
-    this._logIdx = 0;
-    // instead getInitialState()
     this.state = {
-      // 表の初期データ
-      data: this.initialData,
-      // 並べ替えの基準となっている列のインデックス
+      data: this.props.initialData,
+      // schema.id
       sortby: null,
-      // 昇順か降順かを表す真偽値
       descending: false,
-      // row: 行番号, cell: 列番号
+      // {row: rowidx, cell: cellidx}
       edit: null,
-      // 検索機能のON/OFFを管理する真偽値
-      search: false
-    };
-    this._toggleSearch = this._toggleSearch.bind(this);
-    this._sort = this._sort.bind(this);
-    this._showEditor = this._showEditor.bind(this);
-    this._logSetState = this._logSetState.bind(this);
-    this._search = this._search.bind(this);
-    this._save = this._save.bind(this);
-  }
-  // ===============リプレイ機能のためのメソッド群===============
-  componentDidMount() {
-    document.onkeydown = function (e) {
-      // Alt + Shift + Rでリプレイ実行
-      if (e.altKey && e.shiftKey && e.keyCode === 82) {
-        this._reply();
-      }
-      // Alt + z でアンドゥ
-      if (e.altKey && e.keyCode === 90) {
-        this._undo();
-      }
-      // Alt + Shift + zでリドゥ
-      if (e.altKey && e.shiftKey && e.keyCode === 88) {
-        this._redo();
-      }
-    }.bind(this);
-  }
-  _reply() {
-    if (this._log.length === 0) {
-      console.warn('stateが記録されていません');
-      return;
+      // {type: inputtype, idx: cellidx}
+      dialog: null
     }
-    let idx = -1;
-    const interval = setInterval(function () {
-      idx++;
-      if (idx === this._log.length - 1) {
-        clearInterval(interval);
-      }
-      this.setState(this._log[idx]);
-    }.bind(this), 1000);
   }
-  _undo() {
-    if (this._logIdx === 0) {
-      console.warn('これより前のstateはありません');
-      return;
-    }
-    this.setState(this._log[this._logIdx - 1]);
-    this._logIdx--;
-  }
-  _redo() {
-    if (this._log.length <= this._logIdx) {
-      console.warn('これより後のstateはありません');
-      return;
-    }
-    this._logIdx++;
-    this.setState(this._log[this._logIdx - 1]);
-  }
-  // ===============ヘッダーをクリックしてソートするメソッド===============
-  _sort(e) {
-    console.log('----------- start _sort()----------------');
-    // tableに対してcellIndexプロパティを指定すると、そのth(td)の行内における添字を取得できる(ReactではなくDOMの機能)
-    const column = e.target.cellIndex;
-    // 昇順か降順かを決定する
-    let descending = false;
-    // 1.クリックされた列が現在の基準の列と同じ
-    if (column === this.state.sortby) {
-      // 2.現在昇順でソートされている
-      if (!this.state.descending) {
-        // 降順に変更する
-        descending = true;
-      }
-    }
-    // 並べ替えの元となるデータを現在のstateからコピーする(Array.from(配列)で配列のシャローコピーを取得)
-    const data = Array.from(this.state.data);
-    // 配列のコピーをArray.sort()で行う
-    data.sort(function (a, b) {
-      // 文字コードが若いほうが先にくるソート
-      return descending
-        ? (a[column] > b[column] ? 1 : -1)
-        : (a[column] < b[column] ? 1 : -1);
+
+  /**
+   * 親コンポーネントからプロパティの変更があったとき、
+   * Excelコンポーネントのプロパティを更新するメソッド
+   * @param {Object} newProps new Properties
+   */
+  componentWillReceiveProps(newProps) {
+    this.setState({
+      data: newProps.initialData
     });
-    // ソートしたdataを_logSetStateで更新する
-    this._logSetState({
+  }
+
+  /**
+   * 親コンポーネントにdataの変更を通知し、ストレージ更新の
+   * メソッドをコールする
+   * @param {Array} data new Table data
+   */
+  _fireDataChange(data) {
+    this.props.onDataChange(data);
+  }
+
+  /**
+   * 列ヘッダーをクリックしたときにコールされ、
+   * 文字コード基準で昇降順で並び替える
+   * @param {string} key clicked column id
+   */
+  _sort(key) {
+    let data = Array.from(this.state.data);
+    // ソート基準が操作前後で同じであれば昇降順を逆転させる
+    const descending = (this.state.sortby === key) && !this.state.descending;
+    data.sort(function (a, b) {
+      if (descending) {
+        return a[column] < b[column] ? 1 : -1;
+      } else {
+        return a[colmun] > b[column] ? 1 : -1;
+      }
+    });
+    // stateを更新
+    this.setState({
       data: data,
-      sortby: column,
+      sortby: key,
       descending: descending
     });
-    console.log('----------- end   _sort()----------------');
+    this._fireDataChange(data);
   }
-  // ===============セルをダブルクリックしたとき、そのセルの位置を記憶するメソッド===============
-  _showEditor(e) {
-    console.log('----------- start _showEditor()----------------');
-    // stateにeditプロパティを追加する
-    this._logSetState({
+
+  /**
+   * 現在編集中のセルの情報を記録するメソッド
+   * @param {Object} e doubleClicked cell info
+   */
+  _showEditer(e) {
+    this.setState({
       edit: {
-        // 各行にdata-*(カスタムデータ属性)を追加し、datasetから行番号を取得できるようにする
         row: parseInt(e.target.dataset.row, 10),
-        cell: e.target.cellIndex
+        cell: e.target.dataset.key
       }
     });
-    console.log('----------- end   _showEditor()----------------');
   }
-  // ===============セルの入力フィールドでEnterしたときのメソッド===============
+
+  /**
+   * セルの入力値で表を更新し、現在の編集セル情報をリセットする
+   * @param {Object} e edited cell info
+   */
   _save(e) {
-    console.log('----------- start _save()----------------');
-    // formのsubmit処理(デフォルトで発生する)を無効化する
+    // デフォルトのイベントをOFFにする
     e.preventDefault();
-    // form要素の子(input)を取得する
-    const input = e.target.firstChild;
-    // 現在の表データのシャローコピーを取得する
-    const data = Array.from(this.state.data);
-    data[this.state.edit.row][this.state.edit.cell] = input.value;
-    // stateを更新する
-    this._logSetState({
-      data: data,
-      // イベントが終わるので保持していたセルの情報をクリアする
-      edit: null
+    const value = this.refs.input.getValue();
+    let data = Array.from(this.state.data);
+    data[this.state.edit.row][this.state.edit.key] = value;
+    this.setState({
+      edit: null,
+      data: data
     });
-    console.log('----------- end   _save()----------------');
+    this._fireDataChange(data);
   }
-  // ===============検索ボタンの押下時に検索機能のON/OFFを切り替えるメソッド===============
-  _toggleSearch() {
-    console.log('----------- start _toggleSearch()----------------');
-    if (this.state.search) {
-      // 検索機能をOFFにするとき、表データを保存しておいたものに戻す
-      this._logSetState({
-        search: false,
-        data: this._preSearchData
-      });
-      this._preSearchData = null;
-    } else {
-      // 検索機能をONにするとき、表データを保存しておく
-      this._preSearchData = this.state.data;
-      this._logSetState({
-        search: true
-      });
-    }
-    console.log('----------- end   _toggleSearch()----------------');
+
+  /**
+   * Actionsボタンのどれかがクリックされたとき、
+   * dialogプロパティをセットする。
+   * @param {Number} rowidx アクション実行元の行番号
+   * @param {string} action どのActionsボタンかを判断する文字列(info, edit, delete)
+   */
+  _actionClick(rowidx, action) {
+    this.setState({
+      dialog: {
+        type: action,
+        idx: rowidx
+      }
+    });
   }
-  // ===============検索を実行するメソッド===============
-  _search(e) {
-    console.log('----------- start _search()----------------');
-    // 入力文字列を取得
-    const needle = e.target.value.toLowerCase();
-    // 検索文字列が空文字だったとき
-    if (!needle) {
-      // 表データをもとに戻す
-      this._logSetState({ data: this._preSearchData });
+
+  /**
+   * 削除ダイアログでボタンを押下したときにコールされる
+   * @param {string} action
+   */
+  _deleteConfirmationClick(action) {
+    if (action === 'dismiss') {
+      this._closeDialog();
       return;
     }
-    // 入力欄の列インデックスを取得
-    const idx = e.target.dataset.idx;
-    // 保存してある元データの参照から検索結果を取得
-    const searchdata = this._preSearchData.filter(function (row) {
-      // 行データを文字列にしてその中に検索文字列が見つかるか否か
-      return row[idx].toString().toLowerCase().indexOf(needle) > -1;
+    let data = Array.from(this.state.data);
+    // 配列dataからdialogの呼び出し元となった行を削除する
+    data.splice(this.state.dialog.idx, 1);
+    this.setState({
+      dialog: null,
+      data: data
     });
-    this._logSetState({ data: searchdata });
-    console.log('----------- end   _search()----------------');
+    this._fireDataChange(data);
   }
-  // ===============setState実行とともにStateを記録するメソッド===============
-  _logSetState(newState) {
-    this._log.push(JSON.parse(JSON.stringify(
-      this._log.length === 0 ? this.state : newState
-    )));
-    this.setState(newState);
-    this._logIdx++;
+
+  _closeDialog() {
+    this.setState({
+      dialog: null
+    });
   }
-  // ===============json, csvのダウンロードメソッド===============
-  _download(format, ev) {
-    let outputdata = null;
-    if (format === 'json') {
-      outputdata = JSON.stringify(this.state.data);
-    } else {
-      outputdata = this.state.data.reduce(function (result, row) {
-        return result + row.reduce(function (rowresult, cell, idx) {
-          return rowresult
-            + '"'
-            + cell.replace(/"/g, '""')
-            + '"'
-            + (idx < row.length - 1 ? ',' : '');
-        }, '')
-          + "\n";
-      }, '');
+
+  /**
+   * 編集ダイアログでボタンを押下したときにしたときにコールされる
+   * @param {string} action
+   */
+  _saveDataDialog(action) {
+    if (action === 'dismiss') {
+      this._closeDialog();
+      return;
     }
-    const URL = window.URL || window.webkitURL;
-    const blob = new Blob([outputdata], { type: 'text/' + format });
-    ev.target.href = URL.createObjectURL(blob);
-    ev.target.download = 'data.' + format;
+    let data = Array.from(this.state.data);
+    data[this.state.dialog.idx] = this.refs.form.getData();
+    this.setState({
+      dialog: null,
+      data: data
+    });
+    this._fireDataChange(data);
   }
-  // ===============検索機能がONのときに表に検索バーを描画するrender===============
-  _renderSearch() {
-    if (!this.state.search) {
+
+  /**
+   * 削除ダイアログを表示する
+   */
+  _renderDeleteDialog() {
+    const first = this.state.data[this.state.dialog.idx];
+    const nameguess = first[Object.keys(first)[0]];
+    return (
+      <Dialog
+        modal={true}
+        header="Confirmation Delete"
+        confirmLabel="Delete"
+        onAction={this._deleteConfirmationClick.bind(this)}
+      >
+        {'Are you sure to delete?: ${nameguess}'}
+      </Dialog>
+    )
+  }
+
+  /**
+   * 編集/照会ダイアログを表示する
+   * @param {boolean} readonly 読み取り専用かどうか
+   */
+  _renderFormDialog(readonly) {
+    return (
+      <Dialog
+        modal={true}
+        header={readonly ? 'Information' : 'Edit item'}
+        confirmLabel={readonly ? 'OK' : 'SAVE'}
+        hasCancel={!readonly}
+        onAction={this._saveDataDialog.bind(this)}
+      >
+        <Form
+          fields={this.props.schema}
+          initialData={this.state.data[this.state.dialog.idx]}
+          readonly={readonly}
+          ref="form"
+        >
+        </Form>
+      </Dialog>
+    );
+  }
+
+  /**
+   * 各種ダイアログ表示メソッドをコールする
+   */
+  _renderDialog() {
+    if (!this.state.dialog) {
       return null;
     }
-    return (
-      <tr onChange={this._search}>
-        {this.props.headers.map(function (_ignore, idx) {
-          return (
-            <td key={idx}>
-              <input type="text" data-idx={idx} />
-            </td>
-          )
-        })}
-      </tr>
-    );
+    const dialogType = this.state.dialog.type;
+    if (dialogType === 'delete') {
+      return this._renderDeleteDialog();
+    }
+    if (dialogType === 'info') {
+      return this._renderFormDialog(true);
+    }
+    if (dialogType === 'edit') {
+      return this._renderFormDialog();
+    }
+    throw Error('Invalid Dialog: ${this.state.dialog.type}');
   }
-  // ===============検索ボタンを描画するrender===============
-  _renderToolbar() {
-    return (
-      <div className='toolbar'>
-        <button onClick={this._toggleSearch}>検索</button>
-        <a href='data.json' onClick={this._download.bind(this, 'json')}>JSONで保存</a>
-        <a href='data.csv' onClick={this._download.bind(this, 'csv')}>CSVで保存</a>
-      </div>
-    );
-  }
-  // ===============表を描画するrender===============
+
+  /**
+   * 表を描画するrender()
+   */
   _renderTable() {
     return (
       <table>
-        <thead onClick={this._sort}>
+        <thead>
           <tr>
-            {this.props.headers.map(function (title, idx) {
-              if (this.state.sortby === idx) {
-                title += this.state.descending ? '↑' : '↓'
-              }
-              return <th key={idx}>{title}</th>
-            }, this)}
+            {
+              this.props.schema.map(item => {
+                // schemaのshowプロパティがtrueでないなら表示しない
+                if (!item.show) {
+                  return null;
+                }
+                // thをonClick時にsortbyが決定するので、そのカラムに昇降順を示す記号をつける
+                let title = item.label;
+                if (this.state.sortby === item.id) {
+                  title += this.state.descending ? '\u2191' : '\u2193';
+                }
+                return (
+                  <th
+                    className={'schema-${item.id}'}
+                    key={item.id}
+                    onClick={this._sort.bind(this, item.id)}
+                  >
+                    {title}
+                  </th>
+                );
+              }, this)
+            }
+            <th className="ExcelNotSortable">Control</th>
           </tr>
         </thead>
-        <tbody onDoubleClick={this._showEditor}>
-          {this._renderSearch()}
-          {this.state.data.map(function (row, rowidx) {
-            return (
-              <tr key={rowidx}>
-                {console.log(row)}
-                {row.map(function (cell, idx) {
-                  let content = cell;
-                  const edit = this.state.edit;
-                  if (edit) {
-                    if (edit.row === rowidx && edit.cell === idx) {
-                      content =
-                        <form onSubmit={this._save}>
-                          <input type="text" defaultValue={content} />
-                        </form>
-                    }
+        <tbody onDoubleClick={this._showEditer.bind(this)}>
+          {
+            this.state.data.map((row, rowidx) => {
+              return (
+                <tr key={rowidx}>
+                  {
+                    Object.keys(row).map((cell, idx) => {
+                      const schema = this.props.schema[idx];
+                      if (!schema || !schema.show) {
+                        return null;
+                      }
+                      const isRating = schema.type === 'rating';
+                      const edit = this.state.edit;
+                      let content = row[cell];
+                      // 1.Ratingでないセル && 編集中セル情報あり
+                      //   編集中セルがこのセル自身である時
+                      if (!isRating && edit) {
+                        if (edit.row === rowidx && edit.key === schema.id) {
+                          // contentの内容を編集用セルに変更
+                          content = (
+                            <form onSubmit={this._save.bind(this)}>
+                              <FormInput
+                                ref="input"
+                                {...schema}
+                                defaultValue={Number(content)}
+                              >
+                              </FormInput>
+                            </form>
+                          );
+                          // 2.Ratingであるとき
+                        } else if (isRating) {
+                          content = <Rating readonly={true}
+                            defaultValue={Number(content)}></Rating>
+                        }
+                        return (
+                          <td
+                            className={classNames({
+                              ['schema-${schema.id}']: true,
+                              'ExcelEditable': !isRating,
+                              'ExcelDataLeft': schema.align === 'left',
+                              'ExcelDataRight': schema.align === 'right',
+                              'ExcelDataCenter': schema.align !== 'left' && schema.align !== 'right'
+                            })}
+                            key={idx}
+                            data-row={rowidx}
+                            data-key={schema.id}
+                          >
+                            {content}
+                          </td>
+                        );
+                      }
+                    }, this)
                   }
-                  return <td key={idx} data-row={rowidx}>{content}</td>
-                }, this)}
-              </tr>
-            )
-          }, this)}
+                  {/* ActionsコンポーネントのonActionプロパティに_actionClick()を渡す */}
+                  <td className="ExcelDataCenter">
+                    <Actions onAction={this._actionClick.bind(this, rowidx)}></Actions>
+                  </td>
+                </tr>
+              );
+            }, this)
+          }
         </tbody>
       </table>
     );
   }
-  // ===============操作方法を表示するrender===============
-  _renderDescription() {
-    return (
-      <div>
-        <p>・Alt + Shift + Z ... 操作を再生</p>
-        <p>・Alt + Z         ... アンドゥ</p>
-        <p>・Alt + Shift + X ... リドゥ</p>
-      </div>
-    );
-  }
-  // ===============メインのrender===============
+
+  /**
+   * 表、ダイアログのrender()をコールする
+   */
   render() {
     return (
       <div className="Excel">
-        {this._renderToolbar()}
         {this._renderTable()}
-        {/* {this._renderDescription()} */}
+        {this._renderDialog()}
       </div>
-    )
+    );
   }
 }
+
+Excel.propTypes = {
+  schema: PropsTypes.arrayOf(
+    PropTypes.object
+  ),
+  initialData: PropTypes.arrayOf(
+    PropTypes.object
+  ),
+  onDataChange: PropTypes.func
+}
+
 export default Excel
