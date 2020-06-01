@@ -431,7 +431,7 @@ var Excel = function (_Component) {
 }(_react.Component);
 
 Excel.propTypes = {
-  schema: PropsTypes.arrayOf(_propTypes2.default.object),
+  schema: _propTypes2.default.arrayOf(_propTypes2.default.object),
   initialData: _propTypes2.default.arrayOf(_propTypes2.default.object),
   onDataChange: _propTypes2.default.func
 };

@@ -333,7 +333,7 @@ class Excel extends Component {
 }
 
 Excel.propTypes = {
-  schema: PropsTypes.arrayOf(
+  schema: PropTypes.arrayOf(
     PropTypes.object
   ),
   initialData: PropTypes.arrayOf(

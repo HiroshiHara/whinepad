@@ -171,7 +171,7 @@ class Whinepad extends Component {
 
 }
 
-Whinepad.PropTypes = {
+Whinepad.propTypes = {
   schema: PropTypes.arrayOf(
     PropTypes.object
   ),
@@ -179,3 +179,5 @@ Whinepad.PropTypes = {
     PropTypes.object
   )
 }
+
+export default Whinepad

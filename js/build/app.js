@@ -12,28 +12,36 @@ var _Logo = require('./components/Logo');
 
 var _Logo2 = _interopRequireDefault(_Logo);
 
-var _Excel = require('./components/Excel');
+var _Whinepad = require('./components/Whinepad');
 
-var _Excel2 = _interopRequireDefault(_Excel);
+var _Whinepad2 = _interopRequireDefault(_Whinepad);
+
+var _schema = require('./schema');
+
+var _schema2 = _interopRequireDefault(_schema);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 // 表データ読み込み
-var headers = localStorage.getItem('headers');
-var data = localStorage.getItem('data');
-if (!headers) {
-  headers = ['タイトル', '年', '評価', 'コメント'];
-  data = [['テスト', '2020', '3', 'あああ']];
+var data = JSON.parse(localStorage.getItem('data'));
+
+// localStrageに保存されているデータがない場合、サンプルデータを読み込む
+if (!data) {
+  data = {};
+  _schema2.default.forEach(function (item) {
+    data[item.id] = item.sample;
+  });
+  data = [data];
 }
 
 _reactDom2.default.render(_react2.default.createElement(
   'div',
   null,
   _react2.default.createElement(
-    'h1',
-    null,
+    'div',
+    { className: 'app-header' },
     _react2.default.createElement(_Logo2.default, null),
-    'Welcome to Whinepad!'
+    'Whinepad'
   ),
-  _react2.default.createElement(_Excel2.default, { headers: headers, initialData: data })
+  _react2.default.createElement(_Whinepad2.default, { schema: _schema2.default, data: data })
 ), document.getElementById('pad'));

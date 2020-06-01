@@ -22,7 +22,7 @@ function Button(props) {
   }
 }
 
-Button.propsTypes = {
+Button.propTypes = {
   href: PropTypes.string
 };
 

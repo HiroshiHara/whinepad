@@ -3,22 +3,27 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Logo from './components/Logo';
-import Excel from './components/Excel';
+import Whinepad from './components/Whinepad';
+import schema from './schema';
 
 // 表データ読み込み
-let headers = localStorage.getItem('headers');
-let data = localStorage.getItem('data');
-if (!headers) {
-  headers = ['タイトル', '年', '評価', 'コメント'];
-  data = [['テスト', '2020', '3', 'あああ']];
+let data = JSON.parse(localStorage.getItem('data'));
+
+// localStrageに保存されているデータがない場合、サンプルデータを読み込む
+if (!data) {
+  data = {};
+  schema.forEach(item => {
+    data[item.id] = item.sample
+  });
+  data = [data];
 }
 
 ReactDOM.render(
   <div>
-    <h1>
-      <Logo />Welcome to Whinepad!
-    </h1>
-    <Excel headers={headers} initialData={data} />
+    <div className="app-header">
+      <Logo />Whinepad
+    </div>
+    <Whinepad schema={schema} data={data}></Whinepad>
   </div>,
   document.getElementById('pad')
 );
