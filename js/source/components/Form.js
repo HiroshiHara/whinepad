@@ -6,7 +6,7 @@ import FormInput from './FormInput';
 class Form extends Component {
   getData() {
     let data = {};
-    this.props.field.forEach(field =>
+    this.props.fields.forEach(field =>
       data[field.id] = this.refs[field.id].getValue()
     );
     return data;

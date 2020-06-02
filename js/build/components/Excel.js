@@ -32,10 +32,6 @@ var _Rating = require('./Rating');
 
 var _Rating2 = _interopRequireDefault(_Rating);
 
-var _Suggest = require('./Suggest');
-
-var _Suggest2 = _interopRequireDefault(_Suggest);
-
 var _Actions = require('./Actions');
 
 var _Actions2 = _interopRequireDefault(_Actions);
@@ -70,7 +66,7 @@ var Excel = function (_Component) {
       // schema.id
       sortby: null,
       descending: false,
-      // {row: rowidx, cell: cellidx}
+      // {row: rowidx, key: schema.id}
       edit: null,
       // {type: inputtype, idx: cellidx}
       dialog: null
@@ -119,9 +115,9 @@ var Excel = function (_Component) {
       var descending = this.state.sortby === key && !this.state.descending;
       data.sort(function (a, b) {
         if (descending) {
-          return a[column] < b[column] ? 1 : -1;
+          return a[key] < b[key] ? 1 : -1;
         } else {
-          return a[colmun] > b[column] ? 1 : -1;
+          return a[key] > b[key] ? 1 : -1;
         }
       });
       // stateを更新
@@ -139,12 +135,13 @@ var Excel = function (_Component) {
      */
 
   }, {
-    key: '_showEditer',
-    value: function _showEditer(e) {
+    key: '_showEditor',
+    value: function _showEditor(e) {
+      console.log('call');
       this.setState({
         edit: {
           row: parseInt(e.target.dataset.row, 10),
-          cell: e.target.dataset.key
+          key: e.target.dataset.key
         }
       });
     }
@@ -254,7 +251,7 @@ var Excel = function (_Component) {
           confirmLabel: 'Delete',
           onAction: this._deleteConfirmationClick.bind(this)
         },
-        'Are you sure to delete?: ${nameguess}'
+        'Are you sure you want to delete "' + nameguess + '"?'
       );
     }
 
@@ -304,7 +301,7 @@ var Excel = function (_Component) {
       if (dialogType === 'edit') {
         return this._renderFormDialog();
       }
-      throw Error('Invalid Dialog: ${this.state.dialog.type}');
+      throw Error('Invalid Dialog: ' + this.state.dialog.type);
     }
 
     /**
@@ -338,7 +335,7 @@ var Excel = function (_Component) {
               return _react2.default.createElement(
                 'th',
                 {
-                  className: 'schema-${item.id}',
+                  className: 'schema-' + item.id,
                   key: item.id,
                   onClick: _this2._sort.bind(_this2, item.id)
                 },
@@ -348,18 +345,20 @@ var Excel = function (_Component) {
             _react2.default.createElement(
               'th',
               { className: 'ExcelNotSortable' },
-              'Control'
+              'Actions'
             )
           )
         ),
         _react2.default.createElement(
           'tbody',
-          { onDoubleClick: this._showEditer.bind(this) },
+          { onDoubleClick: this._showEditor.bind(this) },
           this.state.data.map(function (row, rowidx) {
             return _react2.default.createElement(
               'tr',
               { key: rowidx },
               Object.keys(row).map(function (cell, idx) {
+                var _classNames;
+
                 var schema = _this2.props.schema[idx];
                 if (!schema || !schema.show) {
                   return null;
@@ -370,8 +369,6 @@ var Excel = function (_Component) {
                 // 1.Ratingでないセル && 編集中セル情報あり
                 //   編集中セルがこのセル自身である時
                 if (!isRating && edit) {
-                  var _classNames;
-
                   if (edit.row === rowidx && edit.key === schema.id) {
                     // contentの内容を編集用セルに変更
                     content = _react2.default.createElement(
@@ -380,25 +377,25 @@ var Excel = function (_Component) {
                       _react2.default.createElement(_FormInput2.default, _extends({
                         ref: 'input'
                       }, schema, {
-                        defaultValue: Number(content)
+                        defaultValue: content
                       }))
                     );
-                    // 2.Ratingであるとき
-                  } else if (isRating) {
-                    content = _react2.default.createElement(_Rating2.default, { readonly: true,
-                      defaultValue: Number(content) });
                   }
-                  return _react2.default.createElement(
-                    'td',
-                    {
-                      className: (0, _classnames2.default)((_classNames = {}, _defineProperty(_classNames, 'schema-${schema.id}', true), _defineProperty(_classNames, 'ExcelEditable', !isRating), _defineProperty(_classNames, 'ExcelDataLeft', schema.align === 'left'), _defineProperty(_classNames, 'ExcelDataRight', schema.align === 'right'), _defineProperty(_classNames, 'ExcelDataCenter', schema.align !== 'left' && schema.align !== 'right'), _classNames)),
-                      key: idx,
-                      'data-row': rowidx,
-                      'data-key': schema.id
-                    },
-                    content
-                  );
+                  // 2.Ratingであるとき
+                } else if (isRating) {
+                  content = _react2.default.createElement(_Rating2.default, { readonly: true,
+                    defaultValue: Number(content) });
                 }
+                return _react2.default.createElement(
+                  'td',
+                  {
+                    className: (0, _classnames2.default)((_classNames = {}, _defineProperty(_classNames, 'schema-' + schema.id, true), _defineProperty(_classNames, 'ExcelEditable', !isRating), _defineProperty(_classNames, 'ExcelDataLeft', schema.align === 'left'), _defineProperty(_classNames, 'ExcelDataRight', schema.align === 'right'), _defineProperty(_classNames, 'ExcelDataCenter', schema.align !== 'left' && schema.align !== 'right'), _classNames)),
+                    key: idx,
+                    'data-row': rowidx,
+                    'data-key': schema.id
+                  },
+                  content
+                );
               }, _this2),
               _react2.default.createElement(
                 'td',

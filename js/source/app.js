@@ -21,9 +21,9 @@ if (!data) {
 ReactDOM.render(
   <div>
     <div className="app-header">
-      <Logo />Whinepad
+      <Logo /> Whinepad
     </div>
-    <Whinepad schema={schema} data={data}></Whinepad>
+    <Whinepad schema={schema} initialData={data}></Whinepad>
   </div>,
   document.getElementById('pad')
 );

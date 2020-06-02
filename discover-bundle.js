@@ -355,7 +355,7 @@ var Dialog = function (_Component) {
       var _this2 = this;
 
       if (this.props.modal) {
-        document.body.clasList.add('DialogModalOpen');
+        document.body.classList.add('DialogModalOpen');
       }
       // When user keydown 'Esc', close Dialog.
       document.onkeydown = function (e) {
@@ -478,7 +478,7 @@ var Form = function (_Component) {
       var _this2 = this;
 
       var data = {};
-      this.props.field.forEach(function (field) {
+      this.props.fields.forEach(function (field) {
         return data[field.id] = _this2.refs[field.id].getValue();
       });
       return data;
@@ -599,14 +599,14 @@ var FormInput = function (_Component) {
     key: 'getValue',
     value: function getValue() {
       // refを用いて汎用的に使えるgetValueを定義
-      var inputValue = this.refs.input.value;
-      if (inputValue) {
-        // DOMのvalue属性がある→textかtextareaなのでそのまま返せる
-        return inputValue;
+      var inputValue = this.refs.input;
+      if (inputValue["value"] !== undefined) {
+        return this.refs.input.value;
       } else {
-        // 独自入力フィールドのときはそのコンポーネントのgetValueを実行
         return this.refs.input.getValue();
       }
+      // DOMのvalue属性がある→textかtextareaなのでそのまま返せる
+      // 独自入力フィールドのときはそのコンポーネントのgetValueを実行
     }
   }, {
     key: 'render',

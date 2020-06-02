@@ -41,7 +41,7 @@ _reactDom2.default.render(_react2.default.createElement(
     'div',
     { className: 'app-header' },
     _react2.default.createElement(_Logo2.default, null),
-    'Whinepad'
+    ' Whinepad'
   ),
-  _react2.default.createElement(_Whinepad2.default, { schema: _schema2.default, data: data })
+  _react2.default.createElement(_Whinepad2.default, { schema: _schema2.default, initialData: data })
 ), document.getElementById('pad'));

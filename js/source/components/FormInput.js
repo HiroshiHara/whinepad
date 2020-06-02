@@ -6,15 +6,16 @@ import Suggest from './Suggest';
 class FormInput extends Component {
   getValue() {
     // refを用いて汎用的に使えるgetValueを定義
-    const inputValue = this.refs.input.value;
-    if (inputValue) {
-      // DOMのvalue属性がある→textかtextareaなのでそのまま返せる
-      return inputValue;
+    const inputValue = this.refs.input;
+    if (inputValue["value"] !== undefined) {
+      return this.refs.input.value;
     } else {
-      // 独自入力フィールドのときはそのコンポーネントのgetValueを実行
       return this.refs.input.getValue();
     }
+    // DOMのvalue属性がある→textかtextareaなのでそのまま返せる
+    // 独自入力フィールドのときはそのコンポーネントのgetValueを実行
   }
+
   render() {
     // 全ての入力フィールドに共通のプロパティ
     const common = {
