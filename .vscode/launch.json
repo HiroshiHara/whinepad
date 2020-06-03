@@ -10,8 +10,8 @@
       // lanunchまたはattachを指定
       "request": "launch",
       // 読み込むHTMLファイルを指定（プロジェクトからのパスを指定）
-      // "file": "${workspaceRoot}/index.html",
-      "file": "${workspaceRoot}/discovery.html",
+      "file": "${workspaceRoot}/index.html",
+      // "file": "${workspaceRoot}/discovery.html",
       "runtimeArgs": [
         "--allow-file-access-from-files"
       ]

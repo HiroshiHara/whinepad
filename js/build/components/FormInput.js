@@ -45,14 +45,14 @@ var FormInput = function (_Component) {
     key: 'getValue',
     value: function getValue() {
       // refを用いて汎用的に使えるgetValueを定義
-      var inputValue = this.refs.input.value;
-      if (inputValue) {
-        // DOMのvalue属性がある→textかtextareaなのでそのまま返せる
-        return inputValue;
+      var inputValue = this.refs.input;
+      if (inputValue["value"] !== undefined) {
+        return this.refs.input.value;
       } else {
-        // 独自入力フィールドのときはそのコンポーネントのgetValueを実行
         return this.refs.input.getValue();
       }
+      // DOMのvalue属性がある→textかtextareaなのでそのまま返せる
+      // 独自入力フィールドのときはそのコンポーネントのgetValueを実行
     }
   }, {
     key: 'render',
@@ -60,7 +60,7 @@ var FormInput = function (_Component) {
       // 全ての入力フィールドに共通のプロパティ
       var common = {
         id: this.props.id,
-        refs: 'input',
+        ref: 'input',
         defaultValue: this.props.defaultValue
         // this.props.typeに応じて描画する入力フィールドを変更する
       };switch (this.props.type) {

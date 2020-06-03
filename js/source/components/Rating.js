@@ -65,7 +65,7 @@ class Rating extends Component {
         {/* 読み取り専用、またはidがないときは送信用の値を設定しない */}
         {this.props.readonly || !this.props.id
           ? null
-          : <input type="hidden" id={this.props.id} value={this.state.rating} />
+          : <input type="hidden" id={this.props.id} value={this.state.rating || 0} />
         }
       </div>
     );

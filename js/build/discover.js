@@ -8,6 +8,10 @@ var _reactDom = require('react-dom');
 
 var _reactDom2 = _interopRequireDefault(_reactDom);
 
+var _Form = require('./components/Form');
+
+var _Form2 = _interopRequireDefault(_Form);
+
 var _FormInput = require('./components/FormInput');
 
 var _FormInput2 = _interopRequireDefault(_FormInput);
@@ -27,6 +31,14 @@ var _Suggest2 = _interopRequireDefault(_Suggest);
 var _Rating = require('./components/Rating');
 
 var _Rating2 = _interopRequireDefault(_Rating);
+
+var _Actions = require('./components/Actions');
+
+var _Actions2 = _interopRequireDefault(_Actions);
+
+var _Dialog = require('./components/Dialog');
+
+var _Dialog2 = _interopRequireDefault(_Dialog);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -247,6 +259,96 @@ _reactDom2.default.render(_react2.default.createElement(
             null,
             _react2.default.createElement(_FormInput2.default, { type: 'text' })
           )
+        )
+      )
+    )
+  ),
+  _react2.default.createElement(
+    'div',
+    { className: 'container', style: { padding: '10px', marginBottom: '32px', border: 'solid' } },
+    _react2.default.createElement(
+      'h2',
+      null,
+      '\u25A0Form'
+    ),
+    _react2.default.createElement(_Form2.default, {
+      fields: [{
+        id: 'rateme',
+        label: 'Rating',
+        type: 'rating'
+      }, {
+        id: 'freetext',
+        label: 'Input',
+        type: 'input'
+      }, {
+        id: 'rateme2',
+        label: 'Rating-readonly',
+        type: 'rating'
+      }, {
+        id: 'country',
+        label: 'datalist',
+        type: 'suggest',
+        options: ['Japan', 'America', 'China', 'German']
+      }],
+      initialData: {
+        rateme: 4,
+        freetext: 'Hello, world.',
+        rateme2: 5,
+        country: 'America'
+      },
+      readonly: false
+    })
+  ),
+  _react2.default.createElement(
+    'div',
+    { className: 'container', style: { padding: '10px', marginBottom: '32px', border: 'solid' } },
+    _react2.default.createElement(
+      'h2',
+      null,
+      '\u25A0Actions'
+    ),
+    _react2.default.createElement(
+      'div',
+      null,
+      _react2.default.createElement(_Actions2.default, { onAction: function onAction(type) {
+          return alert(type);
+        } })
+    )
+  ),
+  _react2.default.createElement(
+    'div',
+    { className: 'container', style: { padding: '10px', marginBottom: '32px', border: 'solid' } },
+    _react2.default.createElement(
+      'h2',
+      null,
+      '\u25A0Dialog'
+    ),
+    _react2.default.createElement(
+      'div',
+      null,
+      _react2.default.createElement(
+        _Dialog2.default,
+        {
+          header: 'A simple dialog.',
+          onAction: function onAction(type) {
+            return alert(type);
+          } },
+        'Hello, world!'
+      ),
+      _react2.default.createElement(
+        _Dialog2.default,
+        {
+          header: 'No cancel button, add custom button.',
+          hasCancel: false,
+          confirmLabel: 'CONFIRM',
+          onAction: function onAction(type) {
+            return alert(type);
+          } },
+        'Whatever you want. example, ',
+        _react2.default.createElement(
+          _Button2.default,
+          null,
+          'Button'
         )
       )
     )
