@@ -74,7 +74,6 @@ class Excel extends Component {
    * @param {Object} e doubleClicked cell info
    */
   _showEditor(e) {
-    console.log('call');
     this.setState({
       edit: {
         row: parseInt(e.target.dataset.row, 10),

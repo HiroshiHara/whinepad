@@ -614,7 +614,7 @@ var FormInput = function (_Component) {
       // 全ての入力フィールドに共通のプロパティ
       var common = {
         id: this.props.id,
-        refs: 'input',
+        ref: 'input',
         defaultValue: this.props.defaultValue
         // this.props.typeに応じて描画する入力フィールドを変更する
       };switch (this.props.type) {
@@ -806,7 +806,7 @@ var Rating = function (_Component) {
           , onMouseOut: this.reset.bind(this)
         },
         stars,
-        this.props.readonly || !this.props.id ? null : _react2.default.createElement('input', { type: 'hidden', id: this.props.id, value: this.state.rating })
+        this.props.readonly || !this.props.id ? null : _react2.default.createElement('input', { type: 'hidden', id: this.props.id, value: this.state.rating || 0 })
       );
     }
   }]);

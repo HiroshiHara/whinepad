@@ -20,7 +20,7 @@ class FormInput extends Component {
     // 全ての入力フィールドに共通のプロパティ
     const common = {
       id: this.props.id,
-      refs: 'input',
+      ref: 'input',
       defaultValue: this.props.defaultValue
     }
     // this.props.typeに応じて描画する入力フィールドを変更する

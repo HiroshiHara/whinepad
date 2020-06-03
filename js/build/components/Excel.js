@@ -137,7 +137,6 @@ var Excel = function (_Component) {
   }, {
     key: '_showEditor',
     value: function _showEditor(e) {
-      console.log('call');
       this.setState({
         edit: {
           row: parseInt(e.target.dataset.row, 10),
