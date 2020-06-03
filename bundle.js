@@ -228,9 +228,9 @@ _reactDom2.default.render(_react2.default.createElement(
     'div',
     { className: 'app-header' },
     _react2.default.createElement(_Logo2.default, null),
-    'Whinepad'
+    ' Whinepad'
   ),
-  _react2.default.createElement(_Whinepad2.default, { schema: _schema2.default, data: data })
+  _react2.default.createElement(_Whinepad2.default, { schema: _schema2.default, initialData: data })
 ), document.getElementById('pad'));
 },{"./components/Logo":10,"./components/Whinepad":13,"./schema":14,"react":30,"react-dom":24}],3:[function(require,module,exports){
 'use strict';
@@ -412,7 +412,7 @@ var Dialog = function (_Component) {
       var _this2 = this;
 
       if (this.props.modal) {
-        document.body.clasList.add('DialogModalOpen');
+        document.body.classList.add('DialogModalOpen');
       }
       // When user keydown 'Esc', close Dialog.
       document.onkeydown = function (e) {
@@ -520,10 +520,6 @@ var _Rating = require('./Rating');
 
 var _Rating2 = _interopRequireDefault(_Rating);
 
-var _Suggest = require('./Suggest');
-
-var _Suggest2 = _interopRequireDefault(_Suggest);
-
 var _Actions = require('./Actions');
 
 var _Actions2 = _interopRequireDefault(_Actions);
@@ -558,7 +554,7 @@ var Excel = function (_Component) {
       // schema.id
       sortby: null,
       descending: false,
-      // {row: rowidx, cell: cellidx}
+      // {row: rowidx, key: schema.id}
       edit: null,
       // {type: inputtype, idx: cellidx}
       dialog: null
@@ -607,9 +603,9 @@ var Excel = function (_Component) {
       var descending = this.state.sortby === key && !this.state.descending;
       data.sort(function (a, b) {
         if (descending) {
-          return a[column] < b[column] ? 1 : -1;
+          return a[key] < b[key] ? 1 : -1;
         } else {
-          return a[colmun] > b[column] ? 1 : -1;
+          return a[key] > b[key] ? 1 : -1;
         }
       });
       // stateを更新
@@ -627,12 +623,12 @@ var Excel = function (_Component) {
      */
 
   }, {
-    key: '_showEditer',
-    value: function _showEditer(e) {
+    key: '_showEditor',
+    value: function _showEditor(e) {
       this.setState({
         edit: {
           row: parseInt(e.target.dataset.row, 10),
-          cell: e.target.dataset.key
+          key: e.target.dataset.key
         }
       });
     }
@@ -742,7 +738,7 @@ var Excel = function (_Component) {
           confirmLabel: 'Delete',
           onAction: this._deleteConfirmationClick.bind(this)
         },
-        'Are you sure to delete?: ${nameguess}'
+        'Are you sure you want to delete "' + nameguess + '"?'
       );
     }
 
@@ -792,7 +788,7 @@ var Excel = function (_Component) {
       if (dialogType === 'edit') {
         return this._renderFormDialog();
       }
-      throw Error('Invalid Dialog: ${this.state.dialog.type}');
+      throw Error('Invalid Dialog: ' + this.state.dialog.type);
     }
 
     /**
@@ -826,7 +822,7 @@ var Excel = function (_Component) {
               return _react2.default.createElement(
                 'th',
                 {
-                  className: 'schema-${item.id}',
+                  className: 'schema-' + item.id,
                   key: item.id,
                   onClick: _this2._sort.bind(_this2, item.id)
                 },
@@ -836,18 +832,20 @@ var Excel = function (_Component) {
             _react2.default.createElement(
               'th',
               { className: 'ExcelNotSortable' },
-              'Control'
+              'Actions'
             )
           )
         ),
         _react2.default.createElement(
           'tbody',
-          { onDoubleClick: this._showEditer.bind(this) },
+          { onDoubleClick: this._showEditor.bind(this) },
           this.state.data.map(function (row, rowidx) {
             return _react2.default.createElement(
               'tr',
               { key: rowidx },
               Object.keys(row).map(function (cell, idx) {
+                var _classNames;
+
                 var schema = _this2.props.schema[idx];
                 if (!schema || !schema.show) {
                   return null;
@@ -858,8 +856,6 @@ var Excel = function (_Component) {
                 // 1.Ratingでないセル && 編集中セル情報あり
                 //   編集中セルがこのセル自身である時
                 if (!isRating && edit) {
-                  var _classNames;
-
                   if (edit.row === rowidx && edit.key === schema.id) {
                     // contentの内容を編集用セルに変更
                     content = _react2.default.createElement(
@@ -868,25 +864,25 @@ var Excel = function (_Component) {
                       _react2.default.createElement(_FormInput2.default, _extends({
                         ref: 'input'
                       }, schema, {
-                        defaultValue: Number(content)
+                        defaultValue: content
                       }))
                     );
-                    // 2.Ratingであるとき
-                  } else if (isRating) {
-                    content = _react2.default.createElement(_Rating2.default, { readonly: true,
-                      defaultValue: Number(content) });
                   }
-                  return _react2.default.createElement(
-                    'td',
-                    {
-                      className: (0, _classnames2.default)((_classNames = {}, _defineProperty(_classNames, 'schema-${schema.id}', true), _defineProperty(_classNames, 'ExcelEditable', !isRating), _defineProperty(_classNames, 'ExcelDataLeft', schema.align === 'left'), _defineProperty(_classNames, 'ExcelDataRight', schema.align === 'right'), _defineProperty(_classNames, 'ExcelDataCenter', schema.align !== 'left' && schema.align !== 'right'), _classNames)),
-                      key: idx,
-                      'data-row': rowidx,
-                      'data-key': schema.id
-                    },
-                    content
-                  );
+                  // 2.Ratingであるとき
+                } else if (isRating) {
+                  content = _react2.default.createElement(_Rating2.default, { readonly: true,
+                    defaultValue: Number(content) });
                 }
+                return _react2.default.createElement(
+                  'td',
+                  {
+                    className: (0, _classnames2.default)((_classNames = {}, _defineProperty(_classNames, 'schema-' + schema.id, true), _defineProperty(_classNames, 'ExcelEditable', !isRating), _defineProperty(_classNames, 'ExcelDataLeft', schema.align === 'left'), _defineProperty(_classNames, 'ExcelDataRight', schema.align === 'right'), _defineProperty(_classNames, 'ExcelDataCenter', schema.align !== 'left' && schema.align !== 'right'), _classNames)),
+                    key: idx,
+                    'data-row': rowidx,
+                    'data-key': schema.id
+                  },
+                  content
+                );
               }, _this2),
               _react2.default.createElement(
                 'td',
@@ -925,7 +921,7 @@ Excel.propTypes = {
 };
 
 exports.default = Excel;
-},{"./Actions":4,"./Dialog":6,"./Form":8,"./FormInput":9,"./Rating":11,"./Suggest":12,"classnames":15,"prop-types":20,"react":30}],8:[function(require,module,exports){
+},{"./Actions":4,"./Dialog":6,"./Form":8,"./FormInput":9,"./Rating":11,"classnames":15,"prop-types":20,"react":30}],8:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -975,7 +971,7 @@ var Form = function (_Component) {
       var _this2 = this;
 
       var data = {};
-      this.props.field.forEach(function (field) {
+      this.props.fields.forEach(function (field) {
         return data[field.id] = _this2.refs[field.id].getValue();
       });
       return data;
@@ -1096,14 +1092,14 @@ var FormInput = function (_Component) {
     key: 'getValue',
     value: function getValue() {
       // refを用いて汎用的に使えるgetValueを定義
-      var inputValue = this.refs.input.value;
-      if (inputValue) {
-        // DOMのvalue属性がある→textかtextareaなのでそのまま返せる
-        return inputValue;
+      var inputValue = this.refs.input;
+      if (inputValue["value"] !== undefined) {
+        return this.refs.input.value;
       } else {
-        // 独自入力フィールドのときはそのコンポーネントのgetValueを実行
         return this.refs.input.getValue();
       }
+      // DOMのvalue属性がある→textかtextareaなのでそのまま返せる
+      // 独自入力フィールドのときはそのコンポーネントのgetValueを実行
     }
   }, {
     key: 'render',
@@ -1111,7 +1107,7 @@ var FormInput = function (_Component) {
       // 全ての入力フィールドに共通のプロパティ
       var common = {
         id: this.props.id,
-        refs: 'input',
+        ref: 'input',
         defaultValue: this.props.defaultValue
         // this.props.typeに応じて描画する入力フィールドを変更する
       };switch (this.props.type) {
@@ -1303,7 +1299,7 @@ var Rating = function (_Component) {
           , onMouseOut: this.reset.bind(this)
         },
         stars,
-        this.props.readonly || !this.props.id ? null : _react2.default.createElement('input', { type: 'hidden', id: this.props.id, value: this.state.rating })
+        this.props.readonly || !this.props.id ? null : _react2.default.createElement('input', { type: 'hidden', id: this.props.id, value: this.state.rating || 0 })
       );
     }
   }]);
@@ -1475,7 +1471,7 @@ var Whinepad = function (_Component) {
   _createClass(Whinepad, [{
     key: '_addNewDialog',
     value: function _addNewDialog() {
-      this._setState({
+      this.setState({
         addnew: true
       });
     }
@@ -1526,7 +1522,7 @@ var Whinepad = function (_Component) {
   }, {
     key: '_commitToStrage',
     value: function _commitToStrage(data) {
-      localStorage.setItem('data', JOSN.stringify(data));
+      localStorage.setItem('data', JSON.stringify(data));
     }
 
     /**
@@ -1628,7 +1624,7 @@ var Whinepad = function (_Component) {
           { className: 'WhinepadDatagrid' },
           _react2.default.createElement(_Excel2.default, {
             schema: this.props.schema,
-            initialData: this.props.data,
+            initialData: this.state.data,
             onDataChange: this._onExcelDataChange.bind(this)
           })
         ),

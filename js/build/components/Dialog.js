@@ -55,7 +55,7 @@ var Dialog = function (_Component) {
       var _this2 = this;
 
       if (this.props.modal) {
-        document.body.clasList.add('DialogModalOpen');
+        document.body.classList.add('DialogModalOpen');
       }
       // When user keydown 'Esc', close Dialog.
       document.onkeydown = function (e) {

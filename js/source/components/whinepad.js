@@ -19,7 +19,7 @@ class Whinepad extends Component {
    * 追加ダイアログを表示させるフラグを立てるメソッド。
    */
   _addNewDialog() {
-    this._setState({
+    this.setState({
       addnew: true
     });
   }
@@ -61,7 +61,7 @@ class Whinepad extends Component {
    * @param {Array} data
    */
   _commitToStrage(data) {
-    localStorage.setItem('data', JOSN.stringify(data));
+    localStorage.setItem('data', JSON.stringify(data));
   }
 
   /**
@@ -143,7 +143,7 @@ class Whinepad extends Component {
         <div className="WhinepadDatagrid">
           <Excel
             schema={this.props.schema}
-            initialData={this.props.data}
+            initialData={this.state.data}
             onDataChange={this._onExcelDataChange.bind(this)}
           >
           </Excel>

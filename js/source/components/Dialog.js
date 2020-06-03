@@ -12,7 +12,7 @@ class Dialog extends Component {
   // When open Dialog on modal, add gray style to body.
   componentDidMount() {
     if (this.props.modal) {
-      document.body.clasList.add('DialogModalOpen');
+      document.body.classList.add('DialogModalOpen');
     }
     // When user keydown 'Esc', close Dialog.
     document.onkeydown = (e) => {

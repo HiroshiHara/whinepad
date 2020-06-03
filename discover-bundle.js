@@ -355,7 +355,7 @@ var Dialog = function (_Component) {
       var _this2 = this;
 
       if (this.props.modal) {
-        document.body.clasList.add('DialogModalOpen');
+        document.body.classList.add('DialogModalOpen');
       }
       // When user keydown 'Esc', close Dialog.
       document.onkeydown = function (e) {
@@ -478,7 +478,7 @@ var Form = function (_Component) {
       var _this2 = this;
 
       var data = {};
-      this.props.field.forEach(function (field) {
+      this.props.fields.forEach(function (field) {
         return data[field.id] = _this2.refs[field.id].getValue();
       });
       return data;
@@ -599,14 +599,14 @@ var FormInput = function (_Component) {
     key: 'getValue',
     value: function getValue() {
       // refを用いて汎用的に使えるgetValueを定義
-      var inputValue = this.refs.input.value;
-      if (inputValue) {
-        // DOMのvalue属性がある→textかtextareaなのでそのまま返せる
-        return inputValue;
+      var inputValue = this.refs.input;
+      if (inputValue["value"] !== undefined) {
+        return this.refs.input.value;
       } else {
-        // 独自入力フィールドのときはそのコンポーネントのgetValueを実行
         return this.refs.input.getValue();
       }
+      // DOMのvalue属性がある→textかtextareaなのでそのまま返せる
+      // 独自入力フィールドのときはそのコンポーネントのgetValueを実行
     }
   }, {
     key: 'render',
@@ -614,7 +614,7 @@ var FormInput = function (_Component) {
       // 全ての入力フィールドに共通のプロパティ
       var common = {
         id: this.props.id,
-        refs: 'input',
+        ref: 'input',
         defaultValue: this.props.defaultValue
         // this.props.typeに応じて描画する入力フィールドを変更する
       };switch (this.props.type) {
@@ -806,7 +806,7 @@ var Rating = function (_Component) {
           , onMouseOut: this.reset.bind(this)
         },
         stars,
-        this.props.readonly || !this.props.id ? null : _react2.default.createElement('input', { type: 'hidden', id: this.props.id, value: this.state.rating })
+        this.props.readonly || !this.props.id ? null : _react2.default.createElement('input', { type: 'hidden', id: this.props.id, value: this.state.rating || 0 })
       );
     }
   }]);

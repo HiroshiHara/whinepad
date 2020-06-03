@@ -6,7 +6,6 @@ import classNames from 'classnames';
 import Form from './Form';
 import FormInput from './FormInput';
 import Rating from './Rating';
-import Suggest from './Suggest';
 import Actions from './Actions';
 import Dialog from './Dialog';
 
@@ -18,7 +17,7 @@ class Excel extends Component {
       // schema.id
       sortby: null,
       descending: false,
-      // {row: rowidx, cell: cellidx}
+      // {row: rowidx, key: schema.id}
       edit: null,
       // {type: inputtype, idx: cellidx}
       dialog: null
@@ -56,9 +55,9 @@ class Excel extends Component {
     const descending = (this.state.sortby === key) && !this.state.descending;
     data.sort(function (a, b) {
       if (descending) {
-        return a[column] < b[column] ? 1 : -1;
+        return a[key] < b[key] ? 1 : -1;
       } else {
-        return a[colmun] > b[column] ? 1 : -1;
+        return a[key] > b[key] ? 1 : -1;
       }
     });
     // stateを更新
@@ -74,11 +73,11 @@ class Excel extends Component {
    * 現在編集中のセルの情報を記録するメソッド
    * @param {Object} e doubleClicked cell info
    */
-  _showEditer(e) {
+  _showEditor(e) {
     this.setState({
       edit: {
         row: parseInt(e.target.dataset.row, 10),
-        cell: e.target.dataset.key
+        key: e.target.dataset.key
       }
     });
   }
@@ -171,7 +170,7 @@ class Excel extends Component {
         confirmLabel="Delete"
         onAction={this._deleteConfirmationClick.bind(this)}
       >
-        {'Are you sure to delete?: ${nameguess}'}
+        {`Are you sure you want to delete "${nameguess}"?`}
       </Dialog>
     )
   }
@@ -217,7 +216,7 @@ class Excel extends Component {
     if (dialogType === 'edit') {
       return this._renderFormDialog();
     }
-    throw Error('Invalid Dialog: ${this.state.dialog.type}');
+    throw Error(`Invalid Dialog: ${this.state.dialog.type}`);
   }
 
   /**
@@ -241,7 +240,7 @@ class Excel extends Component {
                 }
                 return (
                   <th
-                    className={'schema-${item.id}'}
+                    className={`schema-${item.id}`}
                     key={item.id}
                     onClick={this._sort.bind(this, item.id)}
                   >
@@ -250,10 +249,10 @@ class Excel extends Component {
                 );
               }, this)
             }
-            <th className="ExcelNotSortable">Control</th>
+            <th className="ExcelNotSortable">Actions</th>
           </tr>
         </thead>
-        <tbody onDoubleClick={this._showEditer.bind(this)}>
+        <tbody onDoubleClick={this._showEditor.bind(this)}>
           {
             this.state.data.map((row, rowidx) => {
               return (
@@ -277,33 +276,34 @@ class Excel extends Component {
                               <FormInput
                                 ref="input"
                                 {...schema}
-                                defaultValue={Number(content)}
+                                defaultValue={content}
                               >
                               </FormInput>
                             </form>
                           );
-                          // 2.Ratingであるとき
-                        } else if (isRating) {
-                          content = <Rating readonly={true}
-                            defaultValue={Number(content)}></Rating>
                         }
-                        return (
-                          <td
-                            className={classNames({
-                              ['schema-${schema.id}']: true,
-                              'ExcelEditable': !isRating,
-                              'ExcelDataLeft': schema.align === 'left',
-                              'ExcelDataRight': schema.align === 'right',
-                              'ExcelDataCenter': schema.align !== 'left' && schema.align !== 'right'
-                            })}
-                            key={idx}
-                            data-row={rowidx}
-                            data-key={schema.id}
-                          >
-                            {content}
-                          </td>
-                        );
+                        // 2.Ratingであるとき
+                      } else if (isRating) {
+                        content = <Rating readonly={true}
+                          defaultValue={Number(content)}></Rating>
                       }
+                      return (
+                        <td
+                          className={classNames({
+                            [`schema-${schema.id}`]: true,
+                            'ExcelEditable': !isRating,
+                            'ExcelDataLeft': schema.align === 'left',
+                            'ExcelDataRight': schema.align === 'right',
+                            'ExcelDataCenter': schema.align !== 'left' && schema.align !== 'right'
+                          })}
+                          key={idx}
+                          data-row={rowidx}
+                          data-key={schema.id}
+                        >
+                          {content}
+                        </td>
+                      );
+
                     }, this)
                   }
                   {/* ActionsコンポーネントのonActionプロパティに_actionClick()を渡す */}
