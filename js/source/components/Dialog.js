@@ -17,7 +17,7 @@ class Dialog extends Component {
     // When user keydown 'Esc', close Dialog.
     document.onkeydown = (e) => {
       if (e.keyCode === 27) {
-        this.componentWillUnmount();
+        this.props.onAction('dismiss');
       }
     }
   }
@@ -27,24 +27,28 @@ class Dialog extends Component {
       <div className={classNames({
         'Dialog': true,
         'DialogModal': this.props.modal
-      })}>
+      })}
+        onClick={this.props.onAction.bind(this, 'dismiss')}>
         <div className={classNames({
           'DialogModalWrap': this.props.modal
         })}>
-          <div className="DialogHeader">{this.props.header}</div>
-          <div className="DialogBody">{this.props.children}</div>
-          <div className="DialogFooter">
-            {this.props.hasCancel
-              ? <span
-                className="DialogDismiss"
-                onClick={this.props.onAction.bind(this, 'dismiss')}>
-                Cancel
+          <div className="DialogModalContainer"
+            onClick={e => e.stopPropagation()}>
+            <div className="DialogHeader">{this.props.header}</div>
+            <div className="DialogBody">{this.props.children}</div>
+            <div className="DialogFooter">
+              {this.props.hasCancel
+                ? <span
+                  className="DialogDismiss"
+                  onClick={this.props.onAction.bind(this, 'dismiss')}>
+                  Cancel
               </span>
-              : null
-            }
-            <Button onClick={this.props.onAction.bind(this,
-              this.props.hasCancel ? 'confirm' : 'dismiss'
-            )}>{this.props.confirmLabel}</Button>
+                : null
+              }
+              <Button onClick={this.props.onAction.bind(this,
+                this.props.hasCancel ? 'confirm' : 'dismiss'
+              )}>{this.props.confirmLabel}</Button>
+            </div>
           </div>
         </div>
       </div>
