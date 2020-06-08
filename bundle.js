@@ -417,7 +417,7 @@ var Dialog = function (_Component) {
       // When user keydown 'Esc', close Dialog.
       document.onkeydown = function (e) {
         if (e.keyCode === 27) {
-          _this2.componentWillUnmount();
+          _this2.props.onAction('dismiss');
         }
       };
     }
@@ -429,7 +429,8 @@ var Dialog = function (_Component) {
         { className: (0, _classnames2.default)({
             'Dialog': true,
             'DialogModal': this.props.modal
-          }) },
+          }),
+          onClick: this.props.onAction.bind(this, 'dismiss') },
         _react2.default.createElement(
           'div',
           { className: (0, _classnames2.default)({
@@ -437,28 +438,35 @@ var Dialog = function (_Component) {
             }) },
           _react2.default.createElement(
             'div',
-            { className: 'DialogHeader' },
-            this.props.header
-          ),
-          _react2.default.createElement(
-            'div',
-            { className: 'DialogBody' },
-            this.props.children
-          ),
-          _react2.default.createElement(
-            'div',
-            { className: 'DialogFooter' },
-            this.props.hasCancel ? _react2.default.createElement(
-              'span',
-              {
-                className: 'DialogDismiss',
-                onClick: this.props.onAction.bind(this, 'dismiss') },
-              'Cancel'
-            ) : null,
+            { className: 'DialogModalContainer',
+              onClick: function onClick(e) {
+                return e.stopPropagation();
+              } },
             _react2.default.createElement(
-              _Button2.default,
-              { onClick: this.props.onAction.bind(this, this.props.hasCancel ? 'confirm' : 'dismiss') },
-              this.props.confirmLabel
+              'div',
+              { className: 'DialogHeader' },
+              this.props.header
+            ),
+            _react2.default.createElement(
+              'div',
+              { className: 'DialogBody' },
+              this.props.children
+            ),
+            _react2.default.createElement(
+              'div',
+              { className: 'DialogFooter' },
+              this.props.hasCancel ? _react2.default.createElement(
+                'span',
+                {
+                  className: 'DialogDismiss',
+                  onClick: this.props.onAction.bind(this, 'dismiss') },
+                'Cancel'
+              ) : null,
+              _react2.default.createElement(
+                _Button2.default,
+                { onClick: this.props.onAction.bind(this, this.props.hasCancel ? 'confirm' : 'dismiss') },
+                this.props.confirmLabel
+              )
             )
           )
         )
