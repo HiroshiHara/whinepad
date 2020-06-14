@@ -4,7 +4,8 @@
 echo "build start."
 
 # Javascriptのトランスパイル
-babel --presets react,es2015 js/source -d js/build
+# babel --presets react,es2015 js/source -d js/build
+babel js/source -d js/build
 
 # Javascriptのパッケージング
 browserify js/build/app.js -o bundle.js
