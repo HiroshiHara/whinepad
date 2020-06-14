@@ -210,15 +210,16 @@ var _schema2 = _interopRequireDefault(_schema);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 // 表データ読み込み
-var data = JSON.parse(localStorage.getItem('data'));
-
-// localStrageに保存されているデータがない場合、サンプルデータを読み込む
-if (!data) {
-  data = {};
+var localdata = localStorage.getItem('data');
+var data = void 0;
+if (localdata) {
+  data = JSON.parse(localdata);
+} else {
+  // localStrageに保存されているデータがない場合、サンプルデータを読み込む
+  data = [{}];
   _schema2.default.forEach(function (item) {
-    data[item.id] = item.sample;
+    data[0][item.id] = item.sample;
   });
-  data = [data];
 }
 
 _reactDom2.default.render(_react2.default.createElement(
@@ -330,31 +331,23 @@ var _classnames = require('classnames');
 
 var _classnames2 = _interopRequireDefault(_classnames);
 
-var _propTypes = require('prop-types');
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 // functional component
 // functional component is only return DOM elements.
 // It has not state.
 // argument 'props' has all properties from Caller.
-function Button(props) {
+var Button = function Button(props) {
   var cssclasses = (0, _classnames2.default)('Button', props.className);
   if (props.href) {
     return _react2.default.createElement('a', _extends({}, props, { className: cssclasses }));
   } else {
     return _react2.default.createElement('button', _extends({}, props, { className: cssclasses }));
   }
-}
-
-Button.propTypes = {
-  href: _propTypes2.default.string
 };
 
 exports.default = Button;
-},{"classnames":15,"prop-types":20,"react":30}],6:[function(require,module,exports){
+},{"classnames":15,"react":30}],6:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {

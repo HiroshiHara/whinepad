@@ -3,8 +3,15 @@
 # sh scripts/watch.sh
 echo "build start."
 
+# ESLintでコーディング規約のチェック
+eslint js/source
+
+# Flowで型チェック
+flow
+
 # Javascriptのトランスパイル
-babel --presets react,es2015 js/source -d js/build
+# babel --presets react,es2015 js/source -d js/build
+babel js/source -d js/build
 
 # Javascriptのパッケージング
 browserify js/build/app.js -o bundle.js
