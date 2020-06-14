@@ -22,27 +22,19 @@ var _classnames = require('classnames');
 
 var _classnames2 = _interopRequireDefault(_classnames);
 
-var _propTypes = require('prop-types');
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 // functional component
 // functional component is only return DOM elements.
 // It has not state.
 // argument 'props' has all properties from Caller.
-function Button(props) {
+var Button = function Button(props) {
   var cssclasses = (0, _classnames2.default)('Button', props.className);
   if (props.href) {
     return _react2.default.createElement('a', _extends({}, props, { className: cssclasses }));
   } else {
     return _react2.default.createElement('button', _extends({}, props, { className: cssclasses }));
   }
-}
-
-Button.propTypes = {
-  href: _propTypes2.default.string
 };
 
 exports.default = Button;

@@ -1,3 +1,5 @@
+/* @flow */
+
 import React from 'react'
 /*
   classnames library
@@ -7,13 +9,17 @@ import React from 'react'
   More detail @see https://www.npmjs.com/package/classnames
 */
 import classNames from 'classnames';
-import PropTypes from 'prop-types';
+
+type Props = {
+  href: ?string,
+  classNmae: ?string
+}
 
 // functional component
 // functional component is only return DOM elements.
 // It has not state.
 // argument 'props' has all properties from Caller.
-function Button(props) {
+const Button = (props: Object) => {
   const cssclasses = classNames('Button', props.className);
   if (props.href) {
     return <a {...props} className={cssclasses} />
@@ -21,9 +27,5 @@ function Button(props) {
     return <button {...props} className={cssclasses} />
   }
 }
-
-Button.propTypes = {
-  href: PropTypes.string
-};
 
 export default Button
