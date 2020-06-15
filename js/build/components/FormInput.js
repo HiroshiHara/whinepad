@@ -39,9 +39,6 @@ var FormInput = function (_Component) {
 
   _createClass(FormInput, [{
     key: 'getValue',
-
-    // props: FormInputField;
-
     value: function getValue() {
       // refを用いて汎用的に使えるgetValueを定義
       var inputValue = this.refs.input;

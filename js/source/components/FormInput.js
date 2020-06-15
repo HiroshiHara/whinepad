@@ -15,7 +15,6 @@ export type FormInputField = {
 }
 
 class FormInput extends Component<FormInputField> {
-  // props: FormInputField;
 
   getValue(): FormInputFieldValue {
     // refを用いて汎用的に使えるgetValueを定義

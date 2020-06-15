@@ -13,9 +13,7 @@ type Props = {
   children?: Array<any>
 }
 
-class Dialog extends Component {
-
-  props: Props;
+class Dialog extends Component<Props> {
 
   static defaultProps = {
     confirmLabel: 'OK',
