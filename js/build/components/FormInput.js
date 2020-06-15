@@ -12,10 +12,6 @@ var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
-var _propTypes = require('prop-types');
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
-
 var _Rating = require('./Rating');
 
 var _Rating2 = _interopRequireDefault(_Rating);
@@ -43,6 +39,9 @@ var FormInput = function (_Component) {
 
   _createClass(FormInput, [{
     key: 'getValue',
+
+    // props: FormInputField;
+
     value: function getValue() {
       // refを用いて汎用的に使えるgetValueを定義
       var inputValue = this.refs.input;
@@ -89,12 +88,5 @@ var FormInput = function (_Component) {
 
   return FormInput;
 }(_react.Component);
-
-FormInput.propTypes = {
-  type: _propTypes2.default.oneOf(['input', 'text', 'year', 'suggest', 'rating']),
-  id: _propTypes2.default.string,
-  options: _propTypes2.default.array,
-  defaultValue: _propTypes2.default.any
-};
 
 exports.default = FormInput;

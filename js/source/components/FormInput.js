@@ -1,10 +1,23 @@
+/* @flow */
+
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import Rating from './Rating';
 import Suggest from './Suggest';
 
-class FormInput extends Component {
-  getValue() {
+type FormInputFieldType = 'input' | 'text' | 'year' | 'suggest' | 'rating';
+export type FormInputFieldValue = string | number;
+export type FormInputField = {
+  type: FormInputFieldType,
+  defaultValue: ?FormInputFieldValue,
+  id: ?string,
+  options: ?Array<string>,
+  label: ?string
+}
+
+class FormInput extends Component<FormInputField> {
+  // props: FormInputField;
+
+  getValue(): FormInputFieldValue {
     // refを用いて汎用的に使えるgetValueを定義
     const inputValue = this.refs.input;
     if (inputValue["value"] !== undefined) {
@@ -18,7 +31,7 @@ class FormInput extends Component {
 
   render() {
     // 全ての入力フィールドに共通のプロパティ
-    const common = {
+    const common: Object = {
       id: this.props.id,
       ref: 'input',
       defaultValue: this.props.defaultValue
@@ -44,12 +57,6 @@ class FormInput extends Component {
         return <p style={{ fontColor: 'red' }}>invalid type.</p>
     }
   }
-}
-FormInput.propTypes = {
-  type: PropTypes.oneOf(['input', 'text', 'year', 'suggest', 'rating']),
-  id: PropTypes.string,
-  options: PropTypes.array,
-  defaultValue: PropTypes.any
 }
 
 export default FormInput

@@ -185,62 +185,54 @@ process.chdir = function (dir) {
 process.umask = function() { return 0; };
 
 },{}],2:[function(require,module,exports){
-'use strict';
+"use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _react = require('react');
+var _react = require("react");
 
 var _react2 = _interopRequireDefault(_react);
-
-var _propTypes = require('prop-types');
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 // if component has not state, you declare just only arrow-function.
 var Actions = function Actions(props) {
   return _react2.default.createElement(
-    'div',
-    { className: 'Actions' },
+    "div",
+    { className: "Actions" },
     _react2.default.createElement(
-      'span',
+      "span",
       {
-        tabIndex: '0',
-        className: 'ActionsInfo',
-        title: 'Info',
+        tabIndex: "0",
+        className: "ActionsInfo",
+        title: "Info",
         onClick: props.onAction.bind(null, 'info')
       },
-      '\u2139'
+      "\u2139"
     ),
     _react2.default.createElement(
-      'span',
+      "span",
       {
-        tabIndex: '0',
-        className: 'ActionsEdit',
-        title: 'Edit',
+        tabIndex: "0",
+        className: "ActionsEdit",
+        title: "Edit",
         onClick: props.onAction.bind(null, 'edit')
       },
-      '\u2710'
+      "\u2710"
     ),
     _react2.default.createElement(
-      'span',
+      "span",
       {
-        tabIndex: '0',
-        className: 'ActionsDelete',
-        title: 'Delete',
+        tabIndex: "0",
+        className: "ActionsDelete",
+        title: "Delete",
         onClick: props.onAction.bind(null, 'delete')
       },
-      'x'
+      "x"
     )
   );
-};
-
-Actions.propTypes = {
-  onAction: _propTypes2.default.func
 };
 
 Actions.defaultProps = {
@@ -248,7 +240,7 @@ Actions.defaultProps = {
 };
 
 exports.default = Actions;
-},{"prop-types":16,"react":26}],3:[function(require,module,exports){
+},{"react":26}],3:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -302,10 +294,6 @@ var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
-var _propTypes = require('prop-types');
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
-
 var _classnames = require('classnames');
 
 var _classnames2 = _interopRequireDefault(_classnames);
@@ -333,6 +321,7 @@ var Dialog = function (_Component) {
 
   _createClass(Dialog, [{
     key: 'componentWillUnmount',
+
 
     // When Dialog was closed, remove gray style.
     value: function componentWillUnmount() {
@@ -412,23 +401,13 @@ var Dialog = function (_Component) {
   return Dialog;
 }(_react.Component);
 
-Dialog.propTypes = {
-  header: _propTypes2.default.string.isRequired,
-  confirmLabel: _propTypes2.default.string,
-  modal: _propTypes2.default.bool,
-  onAction: _propTypes2.default.func,
-  hasCancel: _propTypes2.default.bool
-};
-
 Dialog.defaultProps = {
   confirmLabel: 'OK',
   modal: false,
   onAction: function onAction() {},
-  hasCancel: true
-};
-
+  hasCancel: true };
 exports.default = Dialog;
-},{"./Button":3,"classnames":11,"prop-types":16,"react":26}],5:[function(require,module,exports){
+},{"./Button":3,"classnames":11,"react":26}],5:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -566,10 +545,6 @@ var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
-var _propTypes = require('prop-types');
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
-
 var _Rating = require('./Rating');
 
 var _Rating2 = _interopRequireDefault(_Rating);
@@ -597,6 +572,9 @@ var FormInput = function (_Component) {
 
   _createClass(FormInput, [{
     key: 'getValue',
+
+    // props: FormInputField;
+
     value: function getValue() {
       // refを用いて汎用的に使えるgetValueを定義
       var inputValue = this.refs.input;
@@ -644,15 +622,8 @@ var FormInput = function (_Component) {
   return FormInput;
 }(_react.Component);
 
-FormInput.propTypes = {
-  type: _propTypes2.default.oneOf(['input', 'text', 'year', 'suggest', 'rating']),
-  id: _propTypes2.default.string,
-  options: _propTypes2.default.array,
-  defaultValue: _propTypes2.default.any
-};
-
 exports.default = FormInput;
-},{"./Rating":8,"./Suggest":9,"prop-types":16,"react":26}],7:[function(require,module,exports){
+},{"./Rating":8,"./Suggest":9,"react":26}],7:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
