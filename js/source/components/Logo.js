@@ -1,6 +1,10 @@
+/* @flow */
+
 import React from 'react'
 
-class Logo extends React.Component {
+type Props = {}
+
+class Logo extends React.Component<Props> {
   render() {
     return <div className="Logo" />;
   }
