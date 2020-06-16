@@ -1,4 +1,3 @@
-/* @flow */
 
 import React, { Component } from 'react'
 // Since React v15.5, PropTypes is separated from React.

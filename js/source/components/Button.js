@@ -11,8 +11,8 @@ import React from 'react'
 import classNames from 'classnames';
 
 type Props = {
-  href: ?string,
-  className: ?string
+  href?: string,
+  className?: string
 }
 
 // functional component

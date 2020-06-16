@@ -7,9 +7,9 @@ import Button from './Button';
 type Props = {
   header: string,
   confirmLabel: string,
-  modal: Boolean,
+  modal: boolean,
   onAction: Function,
-  hasCancel: ?boolean,
+  hasCancel?: boolean,
   children?: Array<any>
 }
 
@@ -24,13 +24,13 @@ class Dialog extends Component<Props> {
 
   // When Dialog was closed, remove gray style.
   componentWillUnmount() {
-    document.body.classList.remove('DialogModalOpen');
+    document.body ? document.body.classList.remove('DialogModalOpen') : null;
   }
 
   // When open Dialog on modal, add gray style to body.
   componentDidMount() {
     if (this.props.modal) {
-      document.body.classList.add('DialogModalOpen');
+      document.body ? document.body.classList.add('DialogModalOpen') : null;
     }
     // When user keydown 'Esc', close Dialog.
     document.onkeydown = (e) => {
