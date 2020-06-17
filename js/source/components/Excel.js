@@ -1,8 +1,6 @@
+/* @flow */
 
 import React, { Component } from 'react'
-// Since React v15.5, PropTypes is separated from React.
-// You should import PropTypes and Replace decralation of React.PropTypes to PropTypes.
-import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import Form from './Form';
 import FormInput from './FormInput';
@@ -10,7 +8,33 @@ import Rating from './Rating';
 import Actions from './Actions';
 import Dialog from './Dialog';
 
-class Excel extends Component {
+type Data = Array<Object>;
+
+type Props = {
+  schema: Data,
+  initialData: Data,
+  onDataChange: Function
+}
+
+type EditState = {
+  row: number,
+  key: string,
+}
+
+type DialogState = {
+  type: String,
+  idx: number
+}
+
+type State = {
+  data: Data,
+  sortby: ?string,
+  descending: boolean,
+  edit: EditState,
+  dialog: DialogState
+}
+
+class Excel extends Component<Props, State> {
   constructor(props: Object) {
     super(props);
     this.state = {
@@ -30,7 +54,7 @@ class Excel extends Component {
    * Excelコンポーネントのプロパティを更新するメソッド
    * @param {Object} newProps new Properties
    */
-  componentWillReceiveProps(newProps) {
+  componentWillReceiveProps(newProps: Props) {
     this.setState({
       data: newProps.initialData
     });
@@ -41,7 +65,7 @@ class Excel extends Component {
    * メソッドをコールする
    * @param {Array} data new Table data
    */
-  _fireDataChange(data) {
+  _fireDataChange(data: Data) {
     this.props.onDataChange(data);
   }
 
@@ -50,7 +74,7 @@ class Excel extends Component {
    * 文字コード基準で昇降順で並び替える
    * @param {string} key clicked column id
    */
-  _sort(key) {
+  _sort(key: string) {
     let data = Array.from(this.state.data);
     // ソート基準が操作前後で同じであれば昇降順を逆転させる
     const descending = (this.state.sortby === key) && !this.state.descending;
@@ -72,9 +96,9 @@ class Excel extends Component {
 
   /**
    * 現在編集中のセルの情報を記録するメソッド
-   * @param {Object} e doubleClicked cell info
+   * @param {Event} e doubleClicked cell info
    */
-  _showEditor(e) {
+  _showEditor(e: Event) {
     this.setState({
       edit: {
         row: parseInt(e.target.dataset.row, 10),
@@ -87,7 +111,7 @@ class Excel extends Component {
    * セルの入力値で表を更新し、現在の編集セル情報をリセットする
    * @param {Object} e edited cell info
    */
-  _save(e) {
+  _save(e: Event) {
     // デフォルトのイベントをOFFにする
     e.preventDefault();
     const value = this.refs.input.getValue();
@@ -106,7 +130,7 @@ class Excel extends Component {
    * @param {Number} rowidx アクション実行元の行番号
    * @param {string} action どのActionsボタンかを判断する文字列(info, edit, delete)
    */
-  _actionClick(rowidx, action) {
+  _actionClick(rowidx: number, action: string) {
     this.setState({
       dialog: {
         type: action,
@@ -119,7 +143,7 @@ class Excel extends Component {
    * 削除ダイアログでボタンを押下したときにコールされる
    * @param {string} action
    */
-  _deleteConfirmationClick(action) {
+  _deleteConfirmationClick(action: string) {
     if (action === 'dismiss') {
       this._closeDialog();
       return;
@@ -144,7 +168,7 @@ class Excel extends Component {
    * 編集ダイアログでボタンを押下したときにしたときにコールされる
    * @param {string} action
    */
-  _saveDataDialog(action) {
+  _saveDataDialog(action: string) {
     if (action === 'dismiss') {
       this._closeDialog();
       return;
@@ -180,7 +204,7 @@ class Excel extends Component {
    * 編集/照会ダイアログを表示する
    * @param {boolean} readonly 読み取り専用かどうか
    */
-  _renderFormDialog(readonly) {
+  _renderFormDialog(readonly: boolean) {
     return (
       <Dialog
         modal={true}
@@ -331,16 +355,6 @@ class Excel extends Component {
       </div>
     );
   }
-}
-
-Excel.propTypes = {
-  schema: PropTypes.arrayOf(
-    PropTypes.object
-  ),
-  initialData: PropTypes.arrayOf(
-    PropTypes.object
-  ),
-  onDataChange: PropTypes.func
 }
 
 export default Excel
