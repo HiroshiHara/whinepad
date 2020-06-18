@@ -1,7 +1,8 @@
 /* @flow */
 
-import React, { Component } from 'react'
+import React, { Component, isValidElement } from 'react'
 import classNames from 'classnames';
+import invariant from 'invariant'
 import Form from './Form';
 import FormInput from './FormInput';
 import Rating from './Rating';
@@ -22,7 +23,7 @@ type EditState = {
 }
 
 type DialogState = {
-  type: String,
+  type: string,
   idx: number
 }
 
@@ -30,8 +31,8 @@ type State = {
   data: Data,
   sortby: ?string,
   descending: boolean,
-  edit: EditState,
-  dialog: DialogState
+  edit: ?EditState,
+  dialog: ?DialogState
 }
 
 class Excel extends Component<Props, State> {
@@ -99,10 +100,11 @@ class Excel extends Component<Props, State> {
    * @param {Event} e doubleClicked cell info
    */
   _showEditor(e: Event) {
+    const target: HTMLElement = ((e.target: any): HTMLElement);
     this.setState({
       edit: {
-        row: parseInt(e.target.dataset.row, 10),
-        key: e.target.dataset.key
+        row: parseInt(target.dataset.row, 10),
+        key: target.dataset.key
       }
     });
   }
@@ -116,6 +118,7 @@ class Excel extends Component<Props, State> {
     e.preventDefault();
     const value = this.refs.input.getValue();
     let data = Array.from(this.state.data);
+    invariant(this.state.edit, 'Invalid this.state.edit.');
     data[this.state.edit.row][this.state.edit.key] = value;
     this.setState({
       edit: null,
@@ -148,9 +151,11 @@ class Excel extends Component<Props, State> {
       this._closeDialog();
       return;
     }
+    const idx = this.state.dialog ? this.state.dialog.idx : null;
+    invariant(typeof idx === 'number', 'Invalid this.state.dialog');
     let data = Array.from(this.state.data);
     // 配列dataからdialogの呼び出し元となった行を削除する
-    data.splice(this.state.dialog.idx, 1);
+    data.splice(idx, 1);
     this.setState({
       dialog: null,
       data: data
@@ -173,8 +178,10 @@ class Excel extends Component<Props, State> {
       this._closeDialog();
       return;
     }
+    const idx = this.state.dialog ? this.state.dialog.idx : null;
+    invariant(typeof idx === 'number', 'Invalid this.state.dialog');
     let data = Array.from(this.state.data);
-    data[this.state.dialog.idx] = this.refs.form.getData();
+    data[idx] = this.refs.form.getData();
     this.setState({
       dialog: null,
       data: data
@@ -186,7 +193,9 @@ class Excel extends Component<Props, State> {
    * 削除ダイアログを表示する
    */
   _renderDeleteDialog() {
-    const first = this.state.data[this.state.dialog.idx];
+    const idx = this.state.dialog ? this.state.dialog.idx : null;
+    invariant(typeof idx === 'number', 'Invalid this.state.dialog.');
+    const first = this.state.data[idx];
     const nameguess = first[Object.keys(first)[0]];
     return (
       <Dialog
@@ -204,7 +213,9 @@ class Excel extends Component<Props, State> {
    * 編集/照会ダイアログを表示する
    * @param {boolean} readonly 読み取り専用かどうか
    */
-  _renderFormDialog(readonly: boolean) {
+  _renderFormDialog(readonly: ?boolean) {
+    const idx = this.state.dialog ? this.state.dialog.idx : null;
+    invariant(typeof idx === 'number', 'Invalid this.state.dialog.');
     return (
       <Dialog
         modal={true}
@@ -215,7 +226,7 @@ class Excel extends Component<Props, State> {
       >
         <Form
           fields={this.props.schema}
-          initialData={this.state.data[this.state.dialog.idx]}
+          initialData={this.state.data[idx]}
           readonly={readonly}
           ref="form"
         >
