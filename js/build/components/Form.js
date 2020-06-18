@@ -12,10 +12,6 @@ var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
-var _propTypes = require('prop-types');
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
-
 var _Rating = require('./Rating');
 
 var _Rating2 = _interopRequireDefault(_Rating);
@@ -62,7 +58,7 @@ var Form = function (_Component) {
         { className: 'Form' },
         this.props.fields.map(function (field) {
           // if accepted initialData prop, then assigned to varialble prefilled.
-          var prefilled = _this3.props.initialData && _this3.props.initialData[field.id];
+          var prefilled = _this3.props.initialData && _this3.props.initialData[field.id] || '';
           if (!_this3.props.readonly) {
             return _react2.default.createElement(
               'div',
@@ -104,19 +100,5 @@ var Form = function (_Component) {
 
   return Form;
 }(_react.Component);
-
-Form.propTypes = {
-  // PropTypes.shape...
-  // An object taking on a particular shape.
-  // below code require particulation Mapping form fields property.
-  fields: _propTypes2.default.arrayOf(_propTypes2.default.shape({
-    id: _propTypes2.default.string.isRequired,
-    label: _propTypes2.default.string.isRequired,
-    type: _propTypes2.default.string.isRequired,
-    options: _propTypes2.default.arrayOf(_propTypes2.default.string)
-  })).isRequired,
-  initialData: _propTypes2.default.object,
-  readonly: _propTypes2.default.bool
-};
 
 exports.default = Form;

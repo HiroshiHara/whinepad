@@ -10,10 +10,6 @@ var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
-var _propTypes = require('prop-types');
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
-
 var _classnames = require('classnames');
 
 var _classnames2 = _interopRequireDefault(_classnames);
@@ -42,9 +38,10 @@ var Dialog = function (_Component) {
   _createClass(Dialog, [{
     key: 'componentWillUnmount',
 
+
     // When Dialog was closed, remove gray style.
     value: function componentWillUnmount() {
-      document.body.classList.remove('DialogModalOpen');
+      document.body ? document.body.classList.remove('DialogModalOpen') : null;
     }
 
     // When open Dialog on modal, add gray style to body.
@@ -55,7 +52,7 @@ var Dialog = function (_Component) {
       var _this2 = this;
 
       if (this.props.modal) {
-        document.body.classList.add('DialogModalOpen');
+        document.body ? document.body.classList.add('DialogModalOpen') : null;
       }
       // When user keydown 'Esc', close Dialog.
       document.onkeydown = function (e) {
@@ -120,19 +117,9 @@ var Dialog = function (_Component) {
   return Dialog;
 }(_react.Component);
 
-Dialog.propTypes = {
-  header: _propTypes2.default.string.isRequired,
-  confirmLabel: _propTypes2.default.string,
-  modal: _propTypes2.default.bool,
-  onAction: _propTypes2.default.func,
-  hasCancel: _propTypes2.default.bool
-};
-
 Dialog.defaultProps = {
   confirmLabel: 'OK',
   modal: false,
   onAction: function onAction() {},
-  hasCancel: true
-};
-
+  hasCancel: true };
 exports.default = Dialog;

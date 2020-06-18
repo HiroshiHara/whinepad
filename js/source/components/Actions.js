@@ -1,8 +1,13 @@
+/* @flow */
+
 import React from 'react';
-import PropTypes from 'prop-types';
+
+type Props = {
+  onAction: Function
+}
 
 // if component has not state, you declare just only arrow-function.
-const Actions = props =>
+const Actions = (props: Props) =>
   <div className="Actions">
     <span
       tabIndex="0"
@@ -23,10 +28,6 @@ const Actions = props =>
       onClick={props.onAction.bind(null, 'delete')}
     >x</span>
   </div>
-
-Actions.propTypes = {
-  onAction: PropTypes.func
-}
 
 Actions.defaultProps = {
   onAction: () => { }

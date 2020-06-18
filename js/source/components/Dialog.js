@@ -1,18 +1,36 @@
+/* @flow */
+
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import Button from './Button';
 
-class Dialog extends Component {
+type Props = {
+  header: string,
+  confirmLabel: string,
+  modal: boolean,
+  onAction: Function,
+  hasCancel?: boolean,
+  children?: Array<any>
+}
+
+class Dialog extends Component<Props> {
+
+  static defaultProps = {
+    confirmLabel: 'OK',
+    modal: false,
+    onAction: () => { },
+    hasCancel: true
+  }
+
   // When Dialog was closed, remove gray style.
   componentWillUnmount() {
-    document.body.classList.remove('DialogModalOpen');
+    document.body ? document.body.classList.remove('DialogModalOpen') : null;
   }
 
   // When open Dialog on modal, add gray style to body.
   componentDidMount() {
     if (this.props.modal) {
-      document.body.classList.add('DialogModalOpen');
+      document.body ? document.body.classList.add('DialogModalOpen') : null;
     }
     // When user keydown 'Esc', close Dialog.
     document.onkeydown = (e) => {
@@ -54,21 +72,6 @@ class Dialog extends Component {
       </div>
     );
   }
-}
-
-Dialog.propTypes = {
-  header: PropTypes.string.isRequired,
-  confirmLabel: PropTypes.string,
-  modal: PropTypes.bool,
-  onAction: PropTypes.func,
-  hasCancel: PropTypes.bool
-}
-
-Dialog.defaultProps = {
-  confirmLabel: 'OK',
-  modal: false,
-  onAction: () => { },
-  hasCancel: true
 }
 
 export default Dialog
