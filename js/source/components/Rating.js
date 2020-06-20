@@ -1,26 +1,45 @@
+/* @flow */
+
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
-class Rating extends Component {
-  constructor(props) {
+type Props = {
+  id?: string,
+  defaultValue: number,
+  readonly: boolean,
+  max: number
+}
+
+type State = {
+  rating: number,
+  tmpRating: number
+}
+
+class Rating extends Component<Props, State> {
+  static defaultProps = {
+    defaultValue: 0,
+    readonly: false,
+    max: 5
+  }
+
+  constructor(props: Props) {
     super(props);
     this.state = {
       rating: props.defaultValue,
       tmpRating: props.defaultValue
     }
   }
-  getValue() {
+  getValue(): number {
     return this.state.rating;
   }
   /* Fire on Mouseover. */
-  setTemp(rating) {
+  setTemp(rating: number) {
     this.setState({
       tmpRating: rating
     });
   }
   /* Fire on Click. */
-  setRating(rating) {
+  setRating(rating: number) {
     this.setState({
       tmpRating: rating,
       rating: rating
@@ -31,13 +50,13 @@ class Rating extends Component {
     this.setTemp(this.state.rating);
   }
   /* Response external access to props */
-  componentWillReceiveProps(newProps) {
+  UNSAFE_componentWillReceiveProps(newProps: Props) {
     this.setRating(newProps.defaultValue);
   }
   render() {
     // Print stars this.props.max time.
     const stars = [];
-    for (let i = 1; i <= this.props.max; i++) {
+    for (let i: number = 1; i <= this.props.max; i++) {
       stars.push(
         <span
           /* 現在の☆の数まで色づけ */
@@ -70,17 +89,6 @@ class Rating extends Component {
       </div>
     );
   }
-}
-
-Rating.propTypes = {
-  defaultValue: PropTypes.number,
-  readonly: PropTypes.bool,
-  max: PropTypes.number
-}
-
-Rating.defaultProps = {
-  defaultValue: 0,
-  max: 5
 }
 
 export default Rating

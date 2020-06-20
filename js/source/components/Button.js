@@ -11,15 +11,15 @@ import React from 'react'
 import classNames from 'classnames';
 
 type Props = {
-  href: ?string,
-  classNmae: ?string
+  href?: string,
+  className?: string
 }
 
 // functional component
 // functional component is only return DOM elements.
 // It has not state.
 // argument 'props' has all properties from Caller.
-const Button = (props: Object) => {
+const Button = (props: Props) => {
   const cssclasses = classNames('Button', props.className);
   if (props.href) {
     return <a {...props} className={cssclasses} />

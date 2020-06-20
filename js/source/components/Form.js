@@ -1,12 +1,20 @@
+/* @flow */
+
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import Rating from './Rating';
 import FormInput from './FormInput';
+import type { FormInputField, FormInputFieldValue } from './FormInput';
 
-class Form extends Component {
+type Props = {
+  fields: Array<FormInputField>,
+  initialData: ?Object,
+  readonly: ?boolean
+}
+
+class Form extends Component<Props> {
   getData() {
-    let data = {};
-    this.props.fields.forEach(field =>
+    let data: Object = {};
+    this.props.fields.forEach((field: FormInputField) =>
       data[field.id] = this.refs[field.id].getValue()
     );
     return data;
@@ -14,9 +22,9 @@ class Form extends Component {
   render() {
     return (
       <form className="Form">
-        {this.props.fields.map(field => {
+        {this.props.fields.map((field: FormInputField) => {
           // if accepted initialData prop, then assigned to varialble prefilled.
-          const prefilled = this.props.initialData && this.props.initialData[field.id];
+          const prefilled: FormInputFieldValue = (this.props.initialData && this.props.initialData[field.id]) || '';
           if (!this.props.readonly) {
             return (
               <div className="FormRow" key={field.id}>
@@ -44,20 +52,6 @@ class Form extends Component {
       </form>
     )
   }
-}
-
-Form.propTypes = {
-  // PropTypes.shape...
-  // An object taking on a particular shape.
-  // below code require particulation Mapping form fields property.
-  fields: PropTypes.arrayOf(PropTypes.shape({
-    id: PropTypes.string.isRequired,
-    label: PropTypes.string.isRequired,
-    type: PropTypes.string.isRequired,
-    options: PropTypes.arrayOf(PropTypes.string)
-  })).isRequired,
-  initialData: PropTypes.object,
-  readonly: PropTypes.bool
 }
 
 export default Form

@@ -10,10 +10,6 @@ var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
-var _propTypes = require('prop-types');
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
-
 var _classnames = require('classnames');
 
 var _classnames2 = _interopRequireDefault(_classnames);
@@ -75,8 +71,8 @@ var Rating = function (_Component) {
     /* Response external access to props */
 
   }, {
-    key: 'componentWillReceiveProps',
-    value: function componentWillReceiveProps(newProps) {
+    key: 'UNSAFE_componentWillReceiveProps',
+    value: function UNSAFE_componentWillReceiveProps(newProps) {
       this.setRating(newProps.defaultValue);
     }
   }, {
@@ -118,15 +114,9 @@ var Rating = function (_Component) {
   return Rating;
 }(_react.Component);
 
-Rating.propTypes = {
-  defaultValue: _propTypes2.default.number,
-  readonly: _propTypes2.default.bool,
-  max: _propTypes2.default.number
-};
-
 Rating.defaultProps = {
   defaultValue: 0,
+  readonly: false,
   max: 5
 };
-
 exports.default = Rating;

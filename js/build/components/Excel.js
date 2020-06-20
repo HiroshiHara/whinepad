@@ -12,13 +12,13 @@ var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
-var _propTypes = require('prop-types');
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
-
 var _classnames = require('classnames');
 
 var _classnames2 = _interopRequireDefault(_classnames);
+
+var _invariant = require('invariant');
+
+var _invariant2 = _interopRequireDefault(_invariant);
 
 var _Form = require('./Form');
 
@@ -49,9 +49,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-// Since React v15.5, PropTypes is separated from React.
-// You should import PropTypes and Replace decralation of React.PropTypes to PropTypes.
-
 
 var Excel = function (_Component) {
   _inherits(Excel, _Component);
@@ -82,8 +79,8 @@ var Excel = function (_Component) {
 
 
   _createClass(Excel, [{
-    key: 'componentWillReceiveProps',
-    value: function componentWillReceiveProps(newProps) {
+    key: 'UNSAFE_componentWillReceiveProps',
+    value: function UNSAFE_componentWillReceiveProps(newProps) {
       this.setState({
         data: newProps.initialData
       });
@@ -131,16 +128,17 @@ var Excel = function (_Component) {
 
     /**
      * 現在編集中のセルの情報を記録するメソッド
-     * @param {Object} e doubleClicked cell info
+     * @param {Event} e doubleClicked cell info
      */
 
   }, {
     key: '_showEditor',
     value: function _showEditor(e) {
+      var target = e.target;
       this.setState({
         edit: {
-          row: parseInt(e.target.dataset.row, 10),
-          key: e.target.dataset.key
+          row: parseInt(target.dataset.row, 10),
+          key: target.dataset.key
         }
       });
     }
@@ -157,6 +155,7 @@ var Excel = function (_Component) {
       e.preventDefault();
       var value = this.refs.input.getValue();
       var data = Array.from(this.state.data);
+      (0, _invariant2.default)(this.state.edit, 'Invalid this.state.edit.');
       data[this.state.edit.row][this.state.edit.key] = value;
       this.setState({
         edit: null,
@@ -195,9 +194,11 @@ var Excel = function (_Component) {
         this._closeDialog();
         return;
       }
+      var idx = this.state.dialog ? this.state.dialog.idx : null;
+      (0, _invariant2.default)(typeof idx === 'number', 'Invalid this.state.dialog');
       var data = Array.from(this.state.data);
       // 配列dataからdialogの呼び出し元となった行を削除する
-      data.splice(this.state.dialog.idx, 1);
+      data.splice(idx, 1);
       this.setState({
         dialog: null,
         data: data
@@ -224,8 +225,10 @@ var Excel = function (_Component) {
         this._closeDialog();
         return;
       }
+      var idx = this.state.dialog ? this.state.dialog.idx : null;
+      (0, _invariant2.default)(typeof idx === 'number', 'Invalid this.state.dialog');
       var data = Array.from(this.state.data);
-      data[this.state.dialog.idx] = this.refs.form.getData();
+      data[idx] = this.refs.form.getData();
       this.setState({
         dialog: null,
         data: data
@@ -240,7 +243,9 @@ var Excel = function (_Component) {
   }, {
     key: '_renderDeleteDialog',
     value: function _renderDeleteDialog() {
-      var first = this.state.data[this.state.dialog.idx];
+      var idx = this.state.dialog ? this.state.dialog.idx : null;
+      (0, _invariant2.default)(typeof idx === 'number', 'Invalid this.state.dialog.');
+      var first = this.state.data[idx];
       var nameguess = first[Object.keys(first)[0]];
       return _react2.default.createElement(
         _Dialog2.default,
@@ -262,6 +267,8 @@ var Excel = function (_Component) {
   }, {
     key: '_renderFormDialog',
     value: function _renderFormDialog(readonly) {
+      var idx = this.state.dialog ? this.state.dialog.idx : null;
+      (0, _invariant2.default)(typeof idx === 'number', 'Invalid this.state.dialog.');
       return _react2.default.createElement(
         _Dialog2.default,
         {
@@ -273,7 +280,7 @@ var Excel = function (_Component) {
         },
         _react2.default.createElement(_Form2.default, {
           fields: this.props.schema,
-          initialData: this.state.data[this.state.dialog.idx],
+          initialData: this.state.data[idx],
           readonly: readonly,
           ref: 'form'
         })
@@ -425,11 +432,5 @@ var Excel = function (_Component) {
 
   return Excel;
 }(_react.Component);
-
-Excel.propTypes = {
-  schema: _propTypes2.default.arrayOf(_propTypes2.default.object),
-  initialData: _propTypes2.default.arrayOf(_propTypes2.default.object),
-  onDataChange: _propTypes2.default.func
-};
 
 exports.default = Excel;
