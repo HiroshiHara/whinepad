@@ -79,8 +79,8 @@ var Excel = function (_Component) {
 
 
   _createClass(Excel, [{
-    key: 'componentWillReceiveProps',
-    value: function componentWillReceiveProps(newProps) {
+    key: 'UNSAFE_componentWillReceiveProps',
+    value: function UNSAFE_componentWillReceiveProps(newProps) {
       this.setState({
         data: newProps.initialData
       });

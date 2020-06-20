@@ -50,7 +50,7 @@ class Rating extends Component<Props, State> {
     this.setTemp(this.state.rating);
   }
   /* Response external access to props */
-  componentWillReceiveProps(newProps: Props) {
+  UNSAFE_componentWillReceiveProps(newProps: Props) {
     this.setRating(newProps.defaultValue);
   }
   render() {

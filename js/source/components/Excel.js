@@ -1,6 +1,6 @@
 /* @flow */
 
-import React, { Component, isValidElement } from 'react'
+import React, { Component } from 'react'
 import classNames from 'classnames';
 import invariant from 'invariant'
 import Form from './Form';
@@ -55,7 +55,7 @@ class Excel extends Component<Props, State> {
    * Excelコンポーネントのプロパティを更新するメソッド
    * @param {Object} newProps new Properties
    */
-  componentWillReceiveProps(newProps: Props) {
+  UNSAFE_componentWillReceiveProps(newProps: Props) {
     this.setState({
       data: newProps.initialData
     });
