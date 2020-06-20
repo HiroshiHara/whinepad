@@ -717,8 +717,8 @@ var Rating = function (_Component) {
     /* Response external access to props */
 
   }, {
-    key: 'componentWillReceiveProps',
-    value: function componentWillReceiveProps(newProps) {
+    key: 'UNSAFE_componentWillReceiveProps',
+    value: function UNSAFE_componentWillReceiveProps(newProps) {
       this.setRating(newProps.defaultValue);
     }
   }, {
