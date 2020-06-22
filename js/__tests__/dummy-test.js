@@ -1,5 +1,5 @@
 describe('a suite', () => {
   it('is a spec', () => {
-    expect(1).toBe(1);
+    expect(1 + 1).toBe(2);
   });
 });
