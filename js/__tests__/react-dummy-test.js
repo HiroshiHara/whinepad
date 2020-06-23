@@ -13,6 +13,7 @@ describe('Rendering Button.', () => {
     )
 
     expect(ReactDOM.findDOMNode(button).innerHTML).toEqual('Hello.');
-
+    TestUtils.Simulate.click(button);
+    expect(ReactDOM.findDOMNode(button).innerHTML).toEqual('Good by.');
   });
 });
