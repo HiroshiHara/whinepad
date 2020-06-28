@@ -3,11 +3,14 @@
 # sh scripts/watch.sh
 echo "build start."
 
-# ESLintでコーディング規約のチェック
-eslint js/source
+# ESLintでコーディング規約のチェック(テストコード含める)
+eslint js/source js/__tests__
 
 # Flowで型チェック
 flow
+
+# jestの実行
+npm test
 
 # Javascriptのトランスパイル
 # babel --presets react,es2015 js/source -d js/build
