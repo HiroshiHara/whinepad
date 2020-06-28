@@ -9,7 +9,7 @@ let data = [{}];
 schema.forEach(item => data[0][item.id] = item.sample);
 
 describe('1. Editing data.', () => {
-  it('1-1. create new data.', () => {
+  it('1-1. rewrite name column.', () => {
     // prepare onDataChange mock.
     const onDataChangeMock = jest.fn();
     // rendering Excel.
@@ -19,8 +19,7 @@ describe('1. Editing data.', () => {
         initialData={data}
         onDataChange={onDataChangeMock}
       />
-    )
-
+    );
     // modify name.
     const newname = 'Pescado branc';
     const cell = TestUtils.scryRenderedDOMComponentsWithTag(excel, 'td')[0];
@@ -37,5 +36,29 @@ describe('1. Editing data.', () => {
     const calls = onDataChangeMock.mock.calls;
     console.log(calls[0][0]);
     expect(calls[0][0][0].name).toEqual(newname);
-  })
-})
+  });
+
+  it('1-2. delete 1 row.', () => {
+    // prepare onDataChange mock.
+    const onDataChangeMock = jest.fn();
+    // rendering Excel.
+    const excel = TestUtils.renderIntoDocument(
+      <Excel
+        schema={schema}
+        initialData={data}
+        onDataChange={onDataChangeMock}
+      />
+    );
+    // click delete button.
+    TestUtils.Simulate.click(
+      TestUtils.findRenderedDOMComponentWithClass(excel, 'ActionsDelete')
+    );
+    // click dialog's confirm button.
+    TestUtils.Simulate.doubleClick(
+      TestUtils.findRenderedDOMComponentWithClass(excel, 'Button')
+    );
+    const calls = onDataChangeMock.mock.calls;
+    console.log(calls);
+    expect(calls.length).toBe(0);
+  });
+});
