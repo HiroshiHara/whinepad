@@ -23,16 +23,16 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">46.15% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>6/13</span>
+                <span class='fraction'>13/13</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">20% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>2/10</span>
+                <span class='fraction'>10/10</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">46.15% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>6/13</span>
+                <span class='fraction'>13/13</span>
             </div>
         
             
@@ -55,7 +55,7 @@
             Press <em>n</em> or <em>j</em> to go to the next uncovered block, <em>b</em>, <em>p</em> or <em>k</em> for the previous block.
         </p>
     </div>
-    <div class='status-line low'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -138,17 +138,9 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -156,24 +148,32 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -200,10 +200,10 @@ class FormInput extends Component&lt;FormInputField&gt; {
   getValue(): FormInputFieldValue {
     // refを用いて汎用的に使えるgetValueを定義
     const inputValue = this.refs.input;
-    <span class="missing-if-branch" title="else path not taken" >E</span>if (inputValue["value"] !== undefined) {
+    if (inputValue["value"] !== undefined) {
       return this.refs.input.value;
     } else {
-<span class="cstat-no" title="statement not covered" >      return this.refs.input.getValue();</span>
+      return this.refs.input.getValue();
     }
     // DOMのvalue属性がある→textかtextareaなのでそのまま返せる
     // 独自入力フィールドのときはそのコンポーネントのgetValueを実行
@@ -220,21 +220,21 @@ class FormInput extends Component&lt;FormInputField&gt; {
     switch (this.props.type) {
       case 'input':
         return &lt;input type="text" {...common} /&gt;
-<span class="branch-1 cbranch-no" title="branch not covered" >      case 'text':</span>
-<span class="cstat-no" title="statement not covered" >        return &lt;textarea {...common}&gt;&lt;/textarea&gt;</span>
-<span class="branch-2 cbranch-no" title="branch not covered" >      case 'year':</span>
-<span class="cstat-no" title="statement not covered" >        return (</span>
+      case 'text':
+        return &lt;textarea {...common}&gt;&lt;/textarea&gt;
+      case 'year':
+        return (
           &lt;input type="number" {...common}
             defaultValue={this.props.defaultValue || new Date().getFullYear()} /&gt;
         );
-<span class="branch-3 cbranch-no" title="branch not covered" >      case 'suggest':</span>
-<span class="cstat-no" title="statement not covered" >        return &lt;Suggest {...common} options={this.props.options} /&gt;</span>
-<span class="branch-4 cbranch-no" title="branch not covered" >      case 'rating':</span>
-<span class="cstat-no" title="statement not covered" >        return &lt;Rating {...common}</span>
+      case 'suggest':
+        return &lt;Suggest {...common} options={this.props.options} /&gt;
+      case 'rating':
+        return &lt;Rating {...common}
           defaultValue={parseInt(this.props.defaultValue, 10)} /&gt;
-<span class="branch-5 cbranch-no" title="branch not covered" >      default:</span>
-<span class="cstat-no" title="statement not covered" >        console.error('invalid type.');</span>
-<span class="cstat-no" title="statement not covered" >        return &lt;p style={{ fontColor: 'red' }}&gt;invalid type.&lt;/p&gt;</span>
+      default:
+        console.error('invalid type.');
+        return &lt;p style={{ fontColor: 'red' }}&gt;invalid type.&lt;/p&gt;
     }
   }
 }
@@ -247,7 +247,7 @@ export default FormInput
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Mon Jun 29 2020 21:56:31 GMT+0900 (GMT+09:00)
+                at Mon Jun 29 2020 23:25:03 GMT+0900 (GMT+09:00)
             </div>
         </div>
         <script src="../../prettify.js"></script>

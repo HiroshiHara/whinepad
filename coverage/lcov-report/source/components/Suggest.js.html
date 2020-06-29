@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">71.43% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/7</span>
+                <span class='fraction'>5/7</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/2</span>
+                <span class='fraction'>2/2</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">60% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/5</span>
+                <span class='fraction'>3/5</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">71.43% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/7</span>
+                <span class='fraction'>5/7</span>
             </div>
         
             
@@ -55,7 +55,7 @@
             Press <em>n</em> or <em>j</em> to go to the next uncovered block, <em>b</em>, <em>p</em> or <em>k</em> for the previous block.
         </p>
     </div>
-    <div class='status-line low'></div>
+    <div class='status-line medium'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -130,8 +130,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -141,8 +141,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -152,7 +152,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -181,9 +181,9 @@ type State = {
 }
 &nbsp;
 class Suggest extends Component&lt;Props, State&gt; {
-<span class="fstat-no" title="function not covered" >  co</span>nstructor(props: Props) {
-<span class="cstat-no" title="statement not covered" >    super(props);</span>
-<span class="cstat-no" title="statement not covered" >    this.state = {</span>
+  constructor(props: Props) {
+    super(props);
+    this.state = {
       value: (props.defaultValue || '')
     }
   }
@@ -191,10 +191,10 @@ class Suggest extends Component&lt;Props, State&gt; {
 <span class="fstat-no" title="function not covered" >  ge</span>tValue(): string {
 <span class="cstat-no" title="statement not covered" >    return this.state.value;</span>
   }
-<span class="fstat-no" title="function not covered" >  re</span>nder() {
+  render() {
     // 適当な英数字の羅列を生成
-    const randomid: string = <span class="cstat-no" title="statement not covered" >Math.random().toString(16).substring(2);</span>
-<span class="cstat-no" title="statement not covered" >    return (</span>
+    const randomid: string = Math.random().toString(16).substring(2);
+    return (
       &lt;div&gt;
         &lt;input type="text"
           list={randomid}
@@ -203,8 +203,8 @@ class Suggest extends Component&lt;Props, State&gt; {
           id={this.props.id} /&gt;
         &lt;datalist id={randomid}&gt;
           {this.props.options.map(
-<span class="fstat-no" title="function not covered" >            (i</span>tem: string, idx: number) =&gt;
-<span class="cstat-no" title="statement not covered" >              &lt;option value={item} key={idx} /&gt;</span>
+            (item: string, idx: number) =&gt;
+              &lt;option value={item} key={idx} /&gt;
           )}
         &lt;/datalist&gt;
       &lt;/div&gt;
@@ -220,7 +220,7 @@ export default Suggest
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Mon Jun 29 2020 21:56:31 GMT+0900 (GMT+09:00)
+                at Mon Jun 29 2020 23:25:03 GMT+0900 (GMT+09:00)
             </div>
         </div>
         <script src="../../prettify.js"></script>
