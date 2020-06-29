@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<coverage generated="1593433475635" clover="3.2.0">
+  <project timestamp="1593433475635" name="All files">
+    <metrics statements="140" coveredstatements="76" conditionals="101" coveredconditionals="44" methods="46" coveredmethods="27" elements="287" coveredelements="147" complexity="0" loc="140" ncloc="140" packages="2" files="10" classes="10"/>
+    <package name="source">
+      <metrics statements="0" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+      <file name="classification.js" path="D:\react-workspace\whinepad\js\source\classification.js">
+        <metrics statements="0" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+      </file>
+      <file name="schema.js" path="D:\react-workspace\whinepad\js\source\schema.js">
+        <metrics statements="0" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+      </file>
+    </package>
+    <package name="source.components">
+      <metrics statements="140" coveredstatements="76" conditionals="101" coveredconditionals="44" methods="46" coveredmethods="27"/>
+      <file name="Actions.js" path="D:\react-workspace\whinepad\js\source\components\Actions.js">
+        <metrics statements="3" coveredstatements="3" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="1"/>
+        <line num="10" count="2" type="stmt"/>
+        <line num="11" count="6" type="stmt"/>
+        <line num="32" count="2" type="stmt"/>
+      </file>
+      <file name="Button.js" path="D:\react-workspace\whinepad\js\source\components\Button.js">
+        <metrics statements="5" coveredstatements="5" conditionals="2" coveredconditionals="2" methods="1" coveredmethods="1"/>
+        <line num="22" count="3" type="stmt"/>
+        <line num="23" count="11" type="stmt"/>
+        <line num="24" count="11" type="cond" truecount="2" falsecount="0"/>
+        <line num="25" count="1" type="stmt"/>
+        <line num="27" count="10" type="stmt"/>
+      </file>
+      <file name="Dialog.js" path="D:\react-workspace\whinepad\js\source\components\Dialog.js">
+        <metrics statements="9" coveredstatements="7" conditionals="12" coveredconditionals="8" methods="6" coveredmethods="4"/>
+        <line num="18" count="2" type="stmt"/>
+        <line num="27" count="1" type="cond" truecount="1" falsecount="1"/>
+        <line num="32" count="8" type="cond" truecount="2" falsecount="0"/>
+        <line num="33" count="3" type="cond" truecount="1" falsecount="1"/>
+        <line num="36" count="8" type="stmt"/>
+        <line num="37" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="38" count="0" type="stmt"/>
+        <line num="44" count="8" type="stmt"/>
+        <line num="54" count="2" type="stmt"/>
+      </file>
+      <file name="Excel.js" path="D:\react-workspace\whinepad\js\source\components\Excel.js">
+        <metrics statements="80" coveredstatements="43" conditionals="54" coveredconditionals="23" methods="19" coveredmethods="12"/>
+        <line num="40" count="2" type="stmt"/>
+        <line num="41" count="2" type="stmt"/>
+        <line num="59" count="0" type="stmt"/>
+        <line num="70" count="1" type="stmt"/>
+        <line num="79" count="0" type="stmt"/>
+        <line num="81" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="82" count="0" type="stmt"/>
+        <line num="83" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="84" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="86" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="90" count="0" type="stmt"/>
+        <line num="95" count="0" type="stmt"/>
+        <line num="103" count="1" type="stmt"/>
+        <line num="104" count="1" type="stmt"/>
+        <line num="118" count="1" type="stmt"/>
+        <line num="119" count="1" type="stmt"/>
+        <line num="120" count="1" type="stmt"/>
+        <line num="121" count="1" type="stmt"/>
+        <line num="122" count="1" type="stmt"/>
+        <line num="123" count="1" type="stmt"/>
+        <line num="127" count="1" type="stmt"/>
+        <line num="137" count="1" type="stmt"/>
+        <line num="150" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="151" count="0" type="stmt"/>
+        <line num="152" count="0" type="stmt"/>
+        <line num="154" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="155" count="0" type="stmt"/>
+        <line num="156" count="0" type="stmt"/>
+        <line num="158" count="0" type="stmt"/>
+        <line num="159" count="0" type="stmt"/>
+        <line num="163" count="0" type="stmt"/>
+        <line num="167" count="0" type="stmt"/>
+        <line num="177" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="178" count="0" type="stmt"/>
+        <line num="179" count="0" type="stmt"/>
+        <line num="181" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="182" count="0" type="stmt"/>
+        <line num="183" count="0" type="stmt"/>
+        <line num="184" count="0" type="stmt"/>
+        <line num="185" count="0" type="stmt"/>
+        <line num="189" count="0" type="stmt"/>
+        <line num="196" count="1" type="cond" truecount="1" falsecount="1"/>
+        <line num="197" count="1" type="stmt"/>
+        <line num="198" count="1" type="stmt"/>
+        <line num="199" count="1" type="stmt"/>
+        <line num="200" count="1" type="stmt"/>
+        <line num="217" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="218" count="0" type="stmt"/>
+        <line num="219" count="0" type="stmt"/>
+        <line num="242" count="5" type="cond" truecount="2" falsecount="0"/>
+        <line num="243" count="4" type="stmt"/>
+        <line num="245" count="1" type="stmt"/>
+        <line num="246" count="1" type="cond" truecount="1" falsecount="1"/>
+        <line num="247" count="1" type="stmt"/>
+        <line num="249" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="250" count="0" type="stmt"/>
+        <line num="252" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="253" count="0" type="stmt"/>
+        <line num="255" count="0" type="stmt"/>
+        <line num="262" count="5" type="stmt"/>
+        <line num="269" count="25" type="cond" truecount="2" falsecount="0"/>
+        <line num="270" count="5" type="stmt"/>
+        <line num="273" count="20" type="stmt"/>
+        <line num="274" count="20" type="cond" truecount="1" falsecount="1"/>
+        <line num="275" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="277" count="20" type="stmt"/>
+        <line num="294" count="5" type="stmt"/>
+        <line num="298" count="25" type="stmt"/>
+        <line num="299" count="25" type="cond" truecount="4" falsecount="0"/>
+        <line num="300" count="5" type="stmt"/>
+        <line num="302" count="20" type="stmt"/>
+        <line num="303" count="20" type="stmt"/>
+        <line num="304" count="20" type="stmt"/>
+        <line num="307" count="20" type="cond" truecount="4" falsecount="0"/>
+        <line num="308" count="3" type="cond" truecount="4" falsecount="0"/>
+        <line num="310" count="1" type="stmt"/>
+        <line num="322" count="17" type="cond" truecount="2" falsecount="0"/>
+        <line num="323" count="5" type="stmt"/>
+        <line num="326" count="20" type="stmt"/>
+        <line num="362" count="5" type="stmt"/>
+      </file>
+      <file name="Form.js" path="D:\react-workspace\whinepad\js\source\components\Form.js">
+        <metrics statements="11" coveredstatements="0" conditionals="9" coveredconditionals="0" methods="4" coveredmethods="0"/>
+        <line num="16" count="0" type="stmt"/>
+        <line num="17" count="0" type="stmt"/>
+        <line num="18" count="0" type="stmt"/>
+        <line num="20" count="0" type="stmt"/>
+        <line num="23" count="0" type="stmt"/>
+        <line num="27" count="0" type="cond" truecount="0" falsecount="3"/>
+        <line num="28" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="29" count="0" type="stmt"/>
+        <line num="37" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="38" count="0" type="stmt"/>
+        <line num="40" count="0" type="stmt"/>
+      </file>
+      <file name="FormInput.js" path="D:\react-workspace\whinepad\js\source\components\FormInput.js">
+        <metrics statements="13" coveredstatements="6" conditionals="10" coveredconditionals="2" methods="2" coveredmethods="2"/>
+        <line num="21" count="1" type="stmt"/>
+        <line num="22" count="1" type="cond" truecount="1" falsecount="1"/>
+        <line num="23" count="1" type="stmt"/>
+        <line num="25" count="0" type="stmt"/>
+        <line num="33" count="1" type="stmt"/>
+        <line num="39" count="1" type="cond" truecount="1" falsecount="5"/>
+        <line num="41" count="1" type="stmt"/>
+        <line num="43" count="0" type="stmt"/>
+        <line num="45" count="0" type="stmt"/>
+        <line num="50" count="0" type="stmt"/>
+        <line num="52" count="0" type="stmt"/>
+        <line num="55" count="0" type="stmt"/>
+        <line num="56" count="0" type="stmt"/>
+      </file>
+      <file name="Rating.js" path="D:\react-workspace\whinepad\js\source\components\Rating.js">
+        <metrics statements="12" coveredstatements="12" conditionals="12" coveredconditionals="9" methods="7" coveredmethods="7"/>
+        <line num="19" count="2" type="stmt"/>
+        <line num="26" count="3" type="stmt"/>
+        <line num="27" count="3" type="stmt"/>
+        <line num="33" count="1" type="stmt"/>
+        <line num="37" count="2" type="stmt"/>
+        <line num="43" count="4" type="stmt"/>
+        <line num="50" count="1" type="stmt"/>
+        <line num="54" count="3" type="stmt"/>
+        <line num="58" count="9" type="stmt"/>
+        <line num="59" count="9" type="stmt"/>
+        <line num="60" count="45" type="stmt"/>
+        <line num="74" count="9" type="stmt"/>
+      </file>
+      <file name="Suggest.js" path="D:\react-workspace\whinepad\js\source\components\Suggest.js">
+        <metrics statements="7" coveredstatements="0" conditionals="2" coveredconditionals="0" methods="5" coveredmethods="0"/>
+        <line num="22" count="0" type="stmt"/>
+        <line num="23" count="0" type="stmt"/>
+        <line num="29" count="0" type="stmt"/>
+        <line num="33" count="0" type="stmt"/>
+        <line num="34" count="0" type="stmt"/>
+        <line num="39" count="0" type="stmt"/>
+        <line num="44" count="0" type="stmt"/>
+      </file>
+    </package>
+  </project>
+</coverage>
