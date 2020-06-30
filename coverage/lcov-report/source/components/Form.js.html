@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/11</span>
+                <span class='fraction'>11/11</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/9</span>
+                <span class='fraction'>9/9</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/4</span>
+                <span class='fraction'>4/4</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/11</span>
+                <span class='fraction'>11/11</span>
             </div>
         
             
@@ -55,7 +55,7 @@
             Press <em>n</em> or <em>j</em> to go to the next uncovered block, <em>b</em>, <em>p</em> or <em>k</em> for the previous block.
         </p>
     </div>
-    <div class='status-line low'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -129,31 +129,31 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">20x</span>
+<span class="cline-any cline-yes">20x</span>
+<span class="cline-any cline-yes">10x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -185,21 +185,21 @@ type Props = {
 }
 &nbsp;
 class Form extends Component&lt;Props&gt; {
-<span class="fstat-no" title="function not covered" >  ge</span>tData() {
-    let data: Object = <span class="cstat-no" title="statement not covered" >{};</span>
-<span class="cstat-no" title="statement not covered" >    this.props.fields.forEach(<span class="fstat-no" title="function not covered" >(f</span>ield: FormInputField) =&gt;</span>
-<span class="cstat-no" title="statement not covered" >      data[field.id] = this.refs[field.id].getValue()</span>
+  getData() {
+    let data: Object = {};
+    this.props.fields.forEach((field: FormInputField) =&gt;
+      data[field.id] = this.refs[field.id].getValue()
     );
-<span class="cstat-no" title="statement not covered" >    return data;</span>
+    return data;
   }
-<span class="fstat-no" title="function not covered" >  re</span>nder() {
-<span class="cstat-no" title="statement not covered" >    return (</span>
+  render() {
+    return (
       &lt;form className="Form"&gt;
-        {this.props.fields.map(<span class="fstat-no" title="function not covered" >(f</span>ield: FormInputField) =&gt; {
+        {this.props.fields.map((field: FormInputField) =&gt; {
           // if accepted initialData prop, then assigned to varialble prefilled.
-          const prefilled: FormInputFieldValue = <span class="cstat-no" title="statement not covered" >(this.props.initialData &amp;&amp; this.props.initialData[field.id]) || '';</span>
-<span class="cstat-no" title="statement not covered" >          if (!this.props.readonly) {</span>
-<span class="cstat-no" title="statement not covered" >            return (</span>
+          const prefilled: FormInputFieldValue = (this.props.initialData &amp;&amp; this.props.initialData[field.id]) || '';
+          if (!this.props.readonly) {
+            return (
               &lt;div className="FormRow" key={field.id}&gt;
                 &lt;label className="FormLabel" htmlFor={field.id}&gt;{field.label}:&lt;/label&gt;
                 &lt;FormInput {...field} ref={field.id} defaultValue={prefilled} /&gt;
@@ -207,10 +207,10 @@ class Form extends Component&lt;Props&gt; {
             );
           }
           // readonly and have some defaultValue, then show component.
-<span class="cstat-no" title="statement not covered" >          if (!prefilled) {</span>
-<span class="cstat-no" title="statement not covered" >            return null;</span>
+          if (!prefilled) {
+            return null;
           }
-<span class="cstat-no" title="statement not covered" >          return (</span>
+          return (
             &lt;div className="FormRow" key={field.id}&gt;
               &lt;span className="FormLabel"&gt;{field.label}:&lt;/span&gt;
               {
@@ -235,7 +235,7 @@ export default Form
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Mon Jun 29 2020 23:25:03 GMT+0900 (GMT+09:00)
+                at Tue Jun 30 2020 23:15:53 GMT+0900 (GMT+09:00)
             </div>
         </div>
         <script src="../../prettify.js"></script>
