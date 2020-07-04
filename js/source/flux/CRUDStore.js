@@ -1,7 +1,11 @@
 /* @flow */
 
+import { EventEmitter } from 'fbemitter';
+
 let data;
 let schema;
+const emitter = new EventEmitter();
+
 
 const CRUDStore = {
   getData(): Array<Object> {
@@ -52,6 +56,15 @@ const CRUDStore = {
     } else {
       data = JSON.parse(storage);
     }
+  },
+
+  /**
+   * Enter to list of subscription.
+   * @param {string} eventType
+   * @param {Function} fn
+   */
+  addListener(eventType: string, fn: Function) {
+    emitter.addListener(eventType, fn);
   }
 }
 
