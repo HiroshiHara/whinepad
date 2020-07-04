@@ -8,14 +8,9 @@ import FormInput from './FormInput';
 import Rating from './Rating';
 import Actions from './Actions';
 import Dialog from './Dialog';
+import CRUDStore from '../flux/CRUDStore';
 
 type Data = Array<Object>;
-
-type Props = {
-  schema: Data,
-  initialData: Data,
-  onDataChange: Function
-}
 
 type EditState = {
   row: number,
@@ -35,11 +30,14 @@ type State = {
   dialog: ?DialogState
 }
 
-class Excel extends Component<Props, State> {
-  constructor(props: Object) {
-    super(props);
+class Excel extends Component {
+  state: State;
+  schema: Array<Object>;
+  constructor() {
+    super();
+    this.schema = CRUDStore.getSchema();
     this.state = {
-      data: this.props.initialData,
+      data: CRUDStore.getData(),
       // schema.id
       sortby: null,
       descending: false,
@@ -48,26 +46,11 @@ class Excel extends Component<Props, State> {
       // {type: inputtype, idx: cellidx}
       dialog: null
     }
-  }
-
-  /**
-   * 親コンポーネントからプロパティの変更があったとき、
-   * Excelコンポーネントのプロパティを更新するメソッド
-   * @param {Object} newProps new Properties
-   */
-  UNSAFE_componentWillReceiveProps(newProps: Props) {
-    this.setState({
-      data: newProps.initialData
+    CRUDStore.addListener('change', () => {
+      this.setState({
+        data: CRUDStore.getData()
+      })
     });
-  }
-
-  /**
-   * 親コンポーネントにdataの変更を通知し、ストレージ更新の
-   * メソッドをコールする
-   * @param {Array} data new Table data
-   */
-  _fireDataChange(data: Data) {
-    this.props.onDataChange(data);
   }
 
   /**
@@ -92,7 +75,6 @@ class Excel extends Component<Props, State> {
       sortby: key,
       descending: descending
     });
-    this._fireDataChange(data);
   }
 
   /**
@@ -124,7 +106,6 @@ class Excel extends Component<Props, State> {
       edit: null,
       data: data
     });
-    this._fireDataChange(data);
   }
 
   /**
@@ -160,7 +141,6 @@ class Excel extends Component<Props, State> {
       dialog: null,
       data: data
     });
-    this._fireDataChange(data);
   }
 
   _closeDialog() {
@@ -186,7 +166,6 @@ class Excel extends Component<Props, State> {
       dialog: null,
       data: data
     });
-    this._fireDataChange(data);
   }
 
   /**
@@ -225,8 +204,7 @@ class Excel extends Component<Props, State> {
         onAction={this._saveDataDialog.bind(this)}
       >
         <Form
-          fields={this.props.schema}
-          initialData={this.state.data[idx]}
+          recordId={idx}
           readonly={readonly}
           ref="form"
         >
@@ -264,7 +242,7 @@ class Excel extends Component<Props, State> {
         <thead>
           <tr>
             {
-              this.props.schema.map(item => {
+              this.schema.map(item => {
                 // schemaのshowプロパティがtrueでないなら表示しない
                 if (!item.show) {
                   return null;
@@ -295,7 +273,7 @@ class Excel extends Component<Props, State> {
                 <tr key={rowidx}>
                   {
                     Object.keys(row).map((cell, idx) => {
-                      const schema = this.props.schema[idx];
+                      const schema = this.schema[idx];
                       if (!schema || !schema.show) {
                         return null;
                       }

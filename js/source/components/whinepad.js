@@ -1,18 +1,39 @@
+/* @flow */
+
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Button from './Button';
 import Dialog from './Dialog';
 import Excel from './Excel';
 import Form from './Form';
+import CRUDStore from '../flux/CRUDStore';
 
 class Whinepad extends Component {
-  constructor(props) {
-    super(props);
+  constructor() {
+    super();
     this.state = {
-      data: props.initialData,
-      addnew: false
-    }
+      addnew: false,
+      count: CRUDStore.getCount()
+    };
+    CRUDStore.addListener('change', () => {
+      this.setState({
+        count: CRUDStore.getCount()
+      })
+    });
     this._preSearchData = null;
+  }
+
+  /**
+   * Optimize rendering component.
+   * It would be update when changed count for records.
+   * @param {Object} newProps
+   * @param {Object} newState
+   */
+  shouldComponentUpdate(newProps: Object, newState: State): boolean {
+    return (
+      newState.addnew !== this.state.addnew ||
+      newState.count !== this.state.count
+    )
   }
 
   /**
@@ -28,7 +49,7 @@ class Whinepad extends Component {
    * 追加ダイアログのonActionプロパティにセットされる関数。
    * @param {string} action
    */
-  _addNew(action) {
+  _addNew(action: string) {
     if (action === 'dismiss') {
       this.setState({
         addnew: false
@@ -47,9 +68,9 @@ class Whinepad extends Component {
   /**
    * 表データに更新があったときコールされる。
    * ストレージ保存メソッドをコールする。
-   * @param {Array} data
+   * @param {Array<Object>} data
    */
-  _onExcelDataChange(data) {
+  _onExcelDataChange(data: Array<Object>) {
     this.setState({
       data: data
     });
@@ -58,9 +79,9 @@ class Whinepad extends Component {
 
   /**
    * LocalStrageに表データをJSON形式で保存する。
-   * @param {Array} data
+   * @param {Array<Object>} data
    */
-  _commitToStrage(data) {
+  _commitToStrage(data: Array<Object>) {
     localStorage.setItem('data', JSON.stringify(data));
   }
 
@@ -90,7 +111,7 @@ class Whinepad extends Component {
    * 4. 検索結果で構成された表データをdataにセット。
    * @param {Object} e event
    */
-  _search(e) {
+  _search(e: Object) {
     const needle = e.target.value.toLowerCase();
     // 1. 検索窓がブランクなら、表データを_preSerchDataでもとに戻す。
     if (!needle) {
@@ -132,7 +153,7 @@ class Whinepad extends Component {
           {/* 検索窓の描画 */}
           <div className="WhinepadToolbarSearch">
             <input
-              placeholder="SEARCH..."
+              placeholder={`Search by ${this.state.count} entries...`}
               onChange={this._search.bind(this)}
               onFocus={this._startSearching.bind(this)}
               onBlur={this._doneSearching.bind(this)}
@@ -141,12 +162,7 @@ class Whinepad extends Component {
         </div>
         {/* 表の描画 */}
         <div className="WhinepadDatagrid">
-          <Excel
-            schema={this.props.schema}
-            initialData={this.state.data}
-            onDataChange={this._onExcelDataChange.bind(this)}
-          >
-          </Excel>
+          <Excel />
         </div>
         {/* 追加ダイアログの描画 */}
         {
