@@ -4,27 +4,40 @@ import React, { Component } from 'react';
 import Rating from './Rating';
 import FormInput from './FormInput';
 import type { FormInputField, FormInputFieldValue } from './FormInput';
+import CRUDStore from '../flux/CRUDStore';
 
 type Props = {
-  fields: Array<FormInputField>,
-  initialData: ?Object,
+  recordId: ?number,
   readonly: ?boolean
 }
 
 class Form extends Component<Props> {
-  getData() {
+
+  fields: Array<Object>
+  initialData: ?Object
+
+  constructor(props: Props) {
+    super(props);
+    this.fields = CRUDStore.getSchema();
+    if ('recordId' in this.props) {
+      this.initialData = CRUDStore.getRecord(this.props.recordId);
+    }
+  }
+
+  getData(): Object {
     let data: Object = {};
-    this.props.fields.forEach((field: FormInputField) =>
+    this.fields.forEach((field: FormInputField) =>
       data[field.id] = this.refs[field.id].getValue()
     );
     return data;
   }
+
   render() {
     return (
       <form className="Form">
-        {this.props.fields.map((field: FormInputField) => {
+        {this.fields.map((field: FormInputField) => {
           // if accepted initialData prop, then assigned to varialble prefilled.
-          const prefilled: FormInputFieldValue = (this.props.initialData && this.props.initialData[field.id]) || '';
+          const prefilled: FormInputFieldValue = (this.initialData && this.initialData[field.id]) || '';
           if (!this.props.readonly) {
             return (
               <div className="FormRow" key={field.id}>
