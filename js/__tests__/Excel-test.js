@@ -61,16 +61,4 @@ describe('1. Editing data.', () => {
     console.log(calls);
     expect(calls.length).toBe(0);
   });
-
-  it('1-3. add row.', () => {
-    const onDataChangeMock = jest.fn();
-    const excel = TestUtils.renderIntoDocument(
-      <Excel
-        schema={schema}
-        initialData={data}
-        onDataChange={onDataChangeMock}
-      />
-    );
-
-  });
 });
