@@ -1,5 +1,6 @@
 [ignore]
 .*/react/node_modules/.*
+.*/fbemitter/node_modules/.*
 
 [include]
 node_modules/react
@@ -7,6 +8,7 @@ node_modules/react-dom
 node_modules/classnames
 node_modules/prop-types
 node_modules/invariant
+node_modules/fbemitter
 
 [libs]
 

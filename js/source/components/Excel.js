@@ -8,14 +8,10 @@ import FormInput from './FormInput';
 import Rating from './Rating';
 import Actions from './Actions';
 import Dialog from './Dialog';
+import CRUDStore from '../flux/CRUDStore';
+import CRUDActions from '../flux/CRUDActions';
 
 type Data = Array<Object>;
-
-type Props = {
-  schema: Data,
-  initialData: Data,
-  onDataChange: Function
-}
 
 type EditState = {
   row: number,
@@ -27,6 +23,10 @@ type DialogState = {
   idx: number
 }
 
+type Props = {
+
+}
+
 type State = {
   data: Data,
   sortby: ?string,
@@ -36,10 +36,13 @@ type State = {
 }
 
 class Excel extends Component<Props, State> {
-  constructor(props: Object) {
-    super(props);
+  state: State;
+  schema: Array<Object>;
+  constructor() {
+    super();
+    this.schema = CRUDStore.getSchema();
     this.state = {
-      data: this.props.initialData,
+      data: CRUDStore.getData(),
       // schema.id
       sortby: null,
       descending: false,
@@ -48,26 +51,11 @@ class Excel extends Component<Props, State> {
       // {type: inputtype, idx: cellidx}
       dialog: null
     }
-  }
-
-  /**
-   * 親コンポーネントからプロパティの変更があったとき、
-   * Excelコンポーネントのプロパティを更新するメソッド
-   * @param {Object} newProps new Properties
-   */
-  UNSAFE_componentWillReceiveProps(newProps: Props) {
-    this.setState({
-      data: newProps.initialData
+    CRUDStore.addListener('change', () => {
+      this.setState({
+        data: CRUDStore.getData()
+      })
     });
-  }
-
-  /**
-   * 親コンポーネントにdataの変更を通知し、ストレージ更新の
-   * メソッドをコールする
-   * @param {Array} data new Table data
-   */
-  _fireDataChange(data: Data) {
-    this.props.onDataChange(data);
   }
 
   /**
@@ -76,23 +64,14 @@ class Excel extends Component<Props, State> {
    * @param {string} key clicked column id
    */
   _sort(key: string) {
-    let data = Array.from(this.state.data);
     // ソート基準が操作前後で同じであれば昇降順を逆転させる
     const descending = (this.state.sortby === key) && !this.state.descending;
-    data.sort(function (a, b) {
-      if (descending) {
-        return a[key] < b[key] ? 1 : -1;
-      } else {
-        return a[key] > b[key] ? 1 : -1;
-      }
-    });
+    CRUDActions.sort(key, descending);
     // stateを更新
     this.setState({
-      data: data,
       sortby: key,
       descending: descending
     });
-    this._fireDataChange(data);
   }
 
   /**
@@ -116,15 +95,15 @@ class Excel extends Component<Props, State> {
   _save(e: Event) {
     // デフォルトのイベントをOFFにする
     e.preventDefault();
-    const value = this.refs.input.getValue();
-    let data = Array.from(this.state.data);
     invariant(this.state.edit, 'Invalid this.state.edit.');
-    data[this.state.edit.row][this.state.edit.key] = value;
+    CRUDActions.updateField(
+      this.state.edit.row,
+      this.state.edit.key,
+      this.refs.input.getValue()
+    )
     this.setState({
       edit: null,
-      data: data
     });
-    this._fireDataChange(data);
   }
 
   /**
@@ -153,14 +132,10 @@ class Excel extends Component<Props, State> {
     }
     const idx = this.state.dialog ? this.state.dialog.idx : null;
     invariant(typeof idx === 'number', 'Invalid this.state.dialog');
-    let data = Array.from(this.state.data);
-    // 配列dataからdialogの呼び出し元となった行を削除する
-    data.splice(idx, 1);
+    CRUDActions.delete(idx);
     this.setState({
       dialog: null,
-      data: data
     });
-    this._fireDataChange(data);
   }
 
   _closeDialog() {
@@ -180,13 +155,10 @@ class Excel extends Component<Props, State> {
     }
     const idx = this.state.dialog ? this.state.dialog.idx : null;
     invariant(typeof idx === 'number', 'Invalid this.state.dialog');
-    let data = Array.from(this.state.data);
-    data[idx] = this.refs.form.getData();
+    CRUDActions.updateRecord(idx, this.refs.form.getData());
     this.setState({
       dialog: null,
-      data: data
     });
-    this._fireDataChange(data);
   }
 
   /**
@@ -225,8 +197,7 @@ class Excel extends Component<Props, State> {
         onAction={this._saveDataDialog.bind(this)}
       >
         <Form
-          fields={this.props.schema}
-          initialData={this.state.data[idx]}
+          recordId={idx}
           readonly={readonly}
           ref="form"
         >
@@ -264,7 +235,7 @@ class Excel extends Component<Props, State> {
         <thead>
           <tr>
             {
-              this.props.schema.map(item => {
+              this.schema.map(item => {
                 // schemaのshowプロパティがtrueでないなら表示しない
                 if (!item.show) {
                   return null;
@@ -295,7 +266,7 @@ class Excel extends Component<Props, State> {
                 <tr key={rowidx}>
                   {
                     Object.keys(row).map((cell, idx) => {
-                      const schema = this.props.schema[idx];
+                      const schema = this.schema[idx];
                       if (!schema || !schema.show) {
                         return null;
                       }

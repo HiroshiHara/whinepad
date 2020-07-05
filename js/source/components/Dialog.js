@@ -10,7 +10,7 @@ type Props = {
   modal: boolean,
   onAction: Function,
   hasCancel?: boolean,
-  children?: Array<any>
+  children?: any
 }
 
 class Dialog extends Component<Props> {

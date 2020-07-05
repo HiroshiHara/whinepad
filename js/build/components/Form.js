@@ -20,6 +20,10 @@ var _FormInput = require('./FormInput');
 
 var _FormInput2 = _interopRequireDefault(_FormInput);
 
+var _CRUDStore = require('../flux/CRUDStore');
+
+var _CRUDStore2 = _interopRequireDefault(_CRUDStore);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -31,10 +35,16 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var Form = function (_Component) {
   _inherits(Form, _Component);
 
-  function Form() {
+  function Form(props) {
     _classCallCheck(this, Form);
 
-    return _possibleConstructorReturn(this, (Form.__proto__ || Object.getPrototypeOf(Form)).apply(this, arguments));
+    var _this = _possibleConstructorReturn(this, (Form.__proto__ || Object.getPrototypeOf(Form)).call(this, props));
+
+    _this.fields = _CRUDStore2.default.getSchema();
+    if (_this.props.recordId) {
+      _this.initialData = _CRUDStore2.default.getRecord(_this.props.recordId);
+    }
+    return _this;
   }
 
   _createClass(Form, [{
@@ -43,7 +53,7 @@ var Form = function (_Component) {
       var _this2 = this;
 
       var data = {};
-      this.props.fields.forEach(function (field) {
+      this.fields.forEach(function (field) {
         return data[field.id] = _this2.refs[field.id].getValue();
       });
       return data;
@@ -56,9 +66,9 @@ var Form = function (_Component) {
       return _react2.default.createElement(
         'form',
         { className: 'Form' },
-        this.props.fields.map(function (field) {
+        this.fields.map(function (field) {
           // if accepted initialData prop, then assigned to varialble prefilled.
-          var prefilled = _this3.props.initialData && _this3.props.initialData[field.id] || '';
+          var prefilled = _this3.initialData && _this3.initialData[field.id] || '';
           if (!_this3.props.readonly) {
             return _react2.default.createElement(
               'div',

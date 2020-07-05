@@ -20,20 +20,14 @@ var _schema = require('./schema');
 
 var _schema2 = _interopRequireDefault(_schema);
 
+var _CRUDStore = require('./flux/CRUDStore');
+
+var _CRUDStore2 = _interopRequireDefault(_CRUDStore);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-// 表データ読み込み
-var localdata = localStorage.getItem('data');
-var data = void 0;
-if (localdata) {
-  data = JSON.parse(localdata);
-} else {
-  // localStrageに保存されているデータがない場合、サンプルデータを読み込む
-  data = [{}];
-  _schema2.default.forEach(function (item) {
-    data[0][item.id] = item.sample;
-  });
-}
+// initialize the data of application.
+_CRUDStore2.default.init(_schema2.default);
 
 _reactDom2.default.render(_react2.default.createElement(
   'div',
@@ -44,5 +38,5 @@ _reactDom2.default.render(_react2.default.createElement(
     _react2.default.createElement(_Logo2.default, null),
     ' Whinepad'
   ),
-  _react2.default.createElement(_Whinepad2.default, { schema: _schema2.default, initialData: data })
+  _react2.default.createElement(_Whinepad2.default, null)
 ), document.getElementById('pad'));
