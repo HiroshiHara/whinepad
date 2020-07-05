@@ -40,6 +40,14 @@ var _Dialog = require('./Dialog');
 
 var _Dialog2 = _interopRequireDefault(_Dialog);
 
+var _CRUDStore = require('../flux/CRUDStore');
+
+var _CRUDStore2 = _interopRequireDefault(_CRUDStore);
+
+var _CRUDActions = require('../flux/CRUDActions');
+
+var _CRUDActions2 = _interopRequireDefault(_CRUDActions);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
@@ -53,13 +61,14 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var Excel = function (_Component) {
   _inherits(Excel, _Component);
 
-  function Excel(props) {
+  function Excel() {
     _classCallCheck(this, Excel);
 
-    var _this = _possibleConstructorReturn(this, (Excel.__proto__ || Object.getPrototypeOf(Excel)).call(this, props));
+    var _this = _possibleConstructorReturn(this, (Excel.__proto__ || Object.getPrototypeOf(Excel)).call(this));
 
+    _this.schema = _CRUDStore2.default.getSchema();
     _this.state = {
-      data: _this.props.initialData,
+      data: _CRUDStore2.default.getData(),
       // schema.id
       sortby: null,
       descending: false,
@@ -68,62 +77,32 @@ var Excel = function (_Component) {
       // {type: inputtype, idx: cellidx}
       dialog: null
     };
+    _CRUDStore2.default.addListener('change', function () {
+      _this.setState({
+        data: _CRUDStore2.default.getData()
+      });
+    });
     return _this;
   }
 
   /**
-   * 親コンポーネントからプロパティの変更があったとき、
-   * Excelコンポーネントのプロパティを更新するメソッド
-   * @param {Object} newProps new Properties
+   * 列ヘッダーをクリックしたときにコールされ、
+   * 文字コード基準で昇降順で並び替える
+   * @param {string} key clicked column id
    */
 
 
   _createClass(Excel, [{
-    key: 'UNSAFE_componentWillReceiveProps',
-    value: function UNSAFE_componentWillReceiveProps(newProps) {
-      this.setState({
-        data: newProps.initialData
-      });
-    }
-
-    /**
-     * 親コンポーネントにdataの変更を通知し、ストレージ更新の
-     * メソッドをコールする
-     * @param {Array} data new Table data
-     */
-
-  }, {
-    key: '_fireDataChange',
-    value: function _fireDataChange(data) {
-      this.props.onDataChange(data);
-    }
-
-    /**
-     * 列ヘッダーをクリックしたときにコールされ、
-     * 文字コード基準で昇降順で並び替える
-     * @param {string} key clicked column id
-     */
-
-  }, {
     key: '_sort',
     value: function _sort(key) {
-      var data = Array.from(this.state.data);
       // ソート基準が操作前後で同じであれば昇降順を逆転させる
       var descending = this.state.sortby === key && !this.state.descending;
-      data.sort(function (a, b) {
-        if (descending) {
-          return a[key] < b[key] ? 1 : -1;
-        } else {
-          return a[key] > b[key] ? 1 : -1;
-        }
-      });
+      _CRUDActions2.default.sort(key, descending);
       // stateを更新
       this.setState({
-        data: data,
         sortby: key,
         descending: descending
       });
-      this._fireDataChange(data);
     }
 
     /**
@@ -153,15 +132,11 @@ var Excel = function (_Component) {
     value: function _save(e) {
       // デフォルトのイベントをOFFにする
       e.preventDefault();
-      var value = this.refs.input.getValue();
-      var data = Array.from(this.state.data);
       (0, _invariant2.default)(this.state.edit, 'Invalid this.state.edit.');
-      data[this.state.edit.row][this.state.edit.key] = value;
+      _CRUDActions2.default.updateField(this.state.edit.row, this.state.edit.key, this.refs.input.getValue());
       this.setState({
-        edit: null,
-        data: data
+        edit: null
       });
-      this._fireDataChange(data);
     }
 
     /**
@@ -196,14 +171,10 @@ var Excel = function (_Component) {
       }
       var idx = this.state.dialog ? this.state.dialog.idx : null;
       (0, _invariant2.default)(typeof idx === 'number', 'Invalid this.state.dialog');
-      var data = Array.from(this.state.data);
-      // 配列dataからdialogの呼び出し元となった行を削除する
-      data.splice(idx, 1);
+      _CRUDActions2.default.delete(idx);
       this.setState({
-        dialog: null,
-        data: data
+        dialog: null
       });
-      this._fireDataChange(data);
     }
   }, {
     key: '_closeDialog',
@@ -227,13 +198,10 @@ var Excel = function (_Component) {
       }
       var idx = this.state.dialog ? this.state.dialog.idx : null;
       (0, _invariant2.default)(typeof idx === 'number', 'Invalid this.state.dialog');
-      var data = Array.from(this.state.data);
-      data[idx] = this.refs.form.getData();
+      _CRUDActions2.default.updateRecord(idx, this.refs.form.getData());
       this.setState({
-        dialog: null,
-        data: data
+        dialog: null
       });
-      this._fireDataChange(data);
     }
 
     /**
@@ -279,8 +247,7 @@ var Excel = function (_Component) {
           onAction: this._saveDataDialog.bind(this)
         },
         _react2.default.createElement(_Form2.default, {
-          fields: this.props.schema,
-          initialData: this.state.data[idx],
+          recordId: idx,
           readonly: readonly,
           ref: 'form'
         })
@@ -328,7 +295,7 @@ var Excel = function (_Component) {
           _react2.default.createElement(
             'tr',
             null,
-            this.props.schema.map(function (item) {
+            this.schema.map(function (item) {
               // schemaのshowプロパティがtrueでないなら表示しない
               if (!item.show) {
                 return null;
@@ -365,7 +332,7 @@ var Excel = function (_Component) {
               Object.keys(row).map(function (cell, idx) {
                 var _classNames;
 
-                var schema = _this2.props.schema[idx];
+                var schema = _this2.schema[idx];
                 if (!schema || !schema.show) {
                   return null;
                 }

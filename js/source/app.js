@@ -17,7 +17,7 @@ ReactDOM.render(
     <div className="app-header">
       <Logo /> Whinepad
     </div>
-    <Whinepad></Whinepad>
+    <Whinepad />
   </div>,
   document.getElementById('pad')
 );

@@ -9,6 +9,7 @@ import Rating from './Rating';
 import Actions from './Actions';
 import Dialog from './Dialog';
 import CRUDStore from '../flux/CRUDStore';
+import CRUDActions from '../flux/CRUDActions';
 
 type Data = Array<Object>;
 
@@ -22,6 +23,10 @@ type DialogState = {
   idx: number
 }
 
+type Props = {
+
+}
+
 type State = {
   data: Data,
   sortby: ?string,
@@ -30,7 +35,7 @@ type State = {
   dialog: ?DialogState
 }
 
-class Excel extends Component {
+class Excel extends Component<Props, State> {
   state: State;
   schema: Array<Object>;
   constructor() {
@@ -59,19 +64,11 @@ class Excel extends Component {
    * @param {string} key clicked column id
    */
   _sort(key: string) {
-    let data = Array.from(this.state.data);
     // ソート基準が操作前後で同じであれば昇降順を逆転させる
     const descending = (this.state.sortby === key) && !this.state.descending;
-    data.sort(function (a, b) {
-      if (descending) {
-        return a[key] < b[key] ? 1 : -1;
-      } else {
-        return a[key] > b[key] ? 1 : -1;
-      }
-    });
+    CRUDActions.sort(key, descending);
     // stateを更新
     this.setState({
-      data: data,
       sortby: key,
       descending: descending
     });
@@ -98,13 +95,14 @@ class Excel extends Component {
   _save(e: Event) {
     // デフォルトのイベントをOFFにする
     e.preventDefault();
-    const value = this.refs.input.getValue();
-    let data = Array.from(this.state.data);
     invariant(this.state.edit, 'Invalid this.state.edit.');
-    data[this.state.edit.row][this.state.edit.key] = value;
+    CRUDActions.updateField(
+      this.state.edit.row,
+      this.state.edit.key,
+      this.refs.input.getValue()
+    )
     this.setState({
       edit: null,
-      data: data
     });
   }
 
@@ -134,12 +132,9 @@ class Excel extends Component {
     }
     const idx = this.state.dialog ? this.state.dialog.idx : null;
     invariant(typeof idx === 'number', 'Invalid this.state.dialog');
-    let data = Array.from(this.state.data);
-    // 配列dataからdialogの呼び出し元となった行を削除する
-    data.splice(idx, 1);
+    CRUDActions.delete(idx);
     this.setState({
       dialog: null,
-      data: data
     });
   }
 
@@ -160,11 +155,9 @@ class Excel extends Component {
     }
     const idx = this.state.dialog ? this.state.dialog.idx : null;
     invariant(typeof idx === 'number', 'Invalid this.state.dialog');
-    let data = Array.from(this.state.data);
-    data[idx] = this.refs.form.getData();
+    CRUDActions.updateRecord(idx, this.refs.form.getData());
     this.setState({
       dialog: null,
-      data: data
     });
   }
 
