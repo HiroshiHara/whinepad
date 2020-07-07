@@ -110,7 +110,11 @@ class Whinepad extends Component<Props, State> {
               confirmLabel="ADD"
               onAction={this._addNew.bind(this)}
             >
-              <Form ref="form" />
+              <Form
+                ref="form"
+                readonly={false}
+                recordId={null}
+              />
             </Dialog>
             : null
         }
